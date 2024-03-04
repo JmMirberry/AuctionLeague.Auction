@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AuctionLeague.AuctionService\AuctionLeague.AuctionService.csproj" />
+        <ProjectReference Include="..\AuctionLeague.MongoDb\AuctionLeague.MongoDb.csproj" />
         <ProjectReference Include="..\MongoDb\AuctionLeague.MongoDb.csproj" />
     </ItemGroup>
 

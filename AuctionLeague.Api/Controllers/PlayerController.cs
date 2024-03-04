@@ -1,6 +1,6 @@
+using AuctionLeague.MongoDb.Entities;
 using AuctionLeague.MongoDb.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using MongoDb.Entities;
 
 namespace SlackAPI.Controllers
 {
