@@ -4,6 +4,7 @@ using SlackAPI.Models;
 using SlackNet.AspNetCore;
 using SlackNet.Events;
 using AuctionLeague.MongoDb;
+using AuctionLeague.MongoDb.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.Configure<MongoDbSettings>(
 builder.Services.Configure<AuctionSettings>(
     builder.Configuration.GetSection("MongoDb"));
 
+builder.Services.AddSingleton<PlayerRepository>();
 
 builder.Services.AddSlackNet(c => c
 .UseApiToken(accessToken)

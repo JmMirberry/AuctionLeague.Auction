@@ -2,6 +2,8 @@ namespace AuctionLeague.MongoDb.Entities
 {
     public class PlayerEntity
     {
+
+        public int _id => PlayerId;
         public int PlayerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
