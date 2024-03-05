@@ -15,12 +15,12 @@ namespace SlackAPI.Controllers
 
         [HttpGet]
         public async Task<List<PlayerEntity>> Get() =>
-            await _playersService.GetAsync();
+            await _playersService.GetPlayersAsync();
 
         [HttpGet("{playerId:length(24)}")]
         public async Task<ActionResult<PlayerEntity>> Get(int playerId)
         {
-            var player = await _playersService.GetAsync(playerId);
+            var player = await _playersService.GetPlayerAsync(playerId);
 
             if (player is null)
             {
@@ -33,7 +33,7 @@ namespace SlackAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(PlayerEntity newPlayer)
         {
-            await _playersService.CreateAsync(newPlayer);
+            await _playersService.AddPlayerAsync(newPlayer);
 
             return CreatedAtAction(nameof(Get), newPlayer);
         }
@@ -41,7 +41,7 @@ namespace SlackAPI.Controllers
         [HttpPut("{playerId:length(24)}")]
         public async Task<IActionResult> Update(int playerId, PlayerEntity updatedPlayer)
         {
-            var player = await _playersService.GetAsync(playerId);
+            var player = await _playersService.GetPlayerAsync(playerId);
 
             if (player is null)
             {
@@ -49,7 +49,7 @@ namespace SlackAPI.Controllers
             }
 
 
-            await _playersService.UpdateAsync(playerId, updatedPlayer);
+            await _playersService.UpdatePlayerAsync(playerId, updatedPlayer);
 
             return NoContent();
         }
@@ -57,14 +57,23 @@ namespace SlackAPI.Controllers
         [HttpDelete("{playerId:length(24)}")]
         public async Task<IActionResult> Delete(int playerId)
         {
-            var player = await _playersService.GetAsync(playerId);
+            var player = await _playersService.GetPlayerAsync(playerId);
 
             if (player is null)
             {
                 return NotFound();
             }
 
-            await _playersService.RemoveAsync(playerId);
+            await _playersService.RemovePlayerAsync(playerId);
+
+            return NoContent();
+        }
+        
+        [HttpDelete()]
+        [Route("Delete-Fpl")]
+        public async Task<IActionResult> DeleteFplPLayers()
+        {
+            await _playersService.RemoveAllFplPlayersAsync();
 
             return NoContent();
         }

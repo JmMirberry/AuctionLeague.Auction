@@ -9,7 +9,8 @@ namespace AuctionLeague.MongoDb.Entities
         public string LastName { get; set; }
         public string Team { get; set; }
         public string Position { get; set; }
-        public int Value { get; set; }
-        public int TotalPoints { get; set; }
+        public double Value { get; set; }
+        public int TotalPointsPreviousYear { get; set; }
+        public bool IsInFpl { get; set; }
     }
 }
