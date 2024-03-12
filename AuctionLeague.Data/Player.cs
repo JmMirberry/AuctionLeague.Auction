@@ -6,9 +6,8 @@ public class Player
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Team { get; set; }
-    public string Position { get; set; }
+    public Position Position { get; set; }
     public double Value { get; set; }
     public int TotalPointsPreviousYear { get; set; }
-    
     public bool IsInFpl { get; set; }
 }

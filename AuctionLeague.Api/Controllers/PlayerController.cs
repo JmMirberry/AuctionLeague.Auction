@@ -1,26 +1,26 @@
-using AuctionLeague.MongoDb.Entities;
-using AuctionLeague.MongoDb.Repositories;
+using AuctionLeague.Data;
+using AuctionLeague.MongoDb.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SlackAPI.Controllers
+namespace AuctionLeague.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class PlayersController : ControllerBase
     {
-        private readonly PlayerRepository _playersService;
+        private readonly IPlayerRepository _playersRepository;
 
-        public PlayersController(PlayerRepository playersService) =>
-            _playersService = playersService;
+        public PlayersController(IPlayerRepository playersRepository) =>
+            _playersRepository = playersRepository;
 
         [HttpGet]
-        public async Task<List<PlayerEntity>> Get() =>
-            await _playersService.GetPlayersAsync();
+        public async Task<List<Player>> Get() =>
+            await _playersRepository.GetPlayersAsync();
 
         [HttpGet("{playerId:length(24)}")]
-        public async Task<ActionResult<PlayerEntity>> Get(int playerId)
+        public async Task<ActionResult<Player>> Get(int playerId)
         {
-            var player = await _playersService.GetPlayerAsync(playerId);
+            var player = await _playersRepository.GetPlayerAsync(playerId);
 
             if (player is null)
             {
@@ -31,17 +31,17 @@ namespace SlackAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PlayerEntity newPlayer)
+        public async Task<IActionResult> Post(Player newPlayer)
         {
-            await _playersService.AddPlayerAsync(newPlayer);
+            await _playersRepository.AddPlayerAsync(newPlayer);
 
             return CreatedAtAction(nameof(Get), newPlayer);
         }
 
         [HttpPut("{playerId:length(24)}")]
-        public async Task<IActionResult> Update(int playerId, PlayerEntity updatedPlayer)
+        public async Task<IActionResult> Update(int playerId, Player updatedPlayer)
         {
-            var player = await _playersService.GetPlayerAsync(playerId);
+            var player = await _playersRepository.GetPlayerAsync(playerId);
 
             if (player is null)
             {
@@ -49,7 +49,7 @@ namespace SlackAPI.Controllers
             }
 
 
-            await _playersService.UpdatePlayerAsync(playerId, updatedPlayer);
+            await _playersRepository.UpdatePlayerAsync(playerId, updatedPlayer);
 
             return NoContent();
         }
@@ -57,14 +57,14 @@ namespace SlackAPI.Controllers
         [HttpDelete("{playerId:length(24)}")]
         public async Task<IActionResult> Delete(int playerId)
         {
-            var player = await _playersService.GetPlayerAsync(playerId);
+            var player = await _playersRepository.GetPlayerAsync(playerId);
 
             if (player is null)
             {
                 return NotFound();
             }
 
-            await _playersService.RemovePlayerAsync(playerId);
+            await _playersRepository.RemovePlayerAsync(playerId);
 
             return NoContent();
         }
@@ -73,7 +73,7 @@ namespace SlackAPI.Controllers
         [Route("Delete-Fpl")]
         public async Task<IActionResult> DeleteFplPLayers()
         {
-            await _playersService.RemoveAllFplPlayersAsync();
+            await _playersRepository.RemoveAllFplPlayersAsync();
 
             return NoContent();
         }

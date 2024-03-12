@@ -2,7 +2,7 @@
 
 namespace AuctionLeague.AuctionService;
 
-public class AuctionTimerService
+public class AuctionTimer
 {
     private readonly Timer _timer;
     private readonly int _timeToOnce;
@@ -14,7 +14,7 @@ public class AuctionTimerService
     private bool _goingOnce;
     private bool _goingTwice;
 
-    public AuctionTimerService(IOptions<AuctionSettings> settings)
+    public AuctionTimer(IOptions<AuctionSettings> settings)
     {
         _timeToOnce = settings.Value.TimeToOnceMs;
         _timeToTwice = settings.Value.TimeToTwiceMs;

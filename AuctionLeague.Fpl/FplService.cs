@@ -1,7 +1,6 @@
 ﻿using AuctionLeague.Data;
 using AuctionLeague.Fpl.Models;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.MongoDb.Mappers;
 
 namespace AuctionLeague.Fpl;
 
@@ -21,7 +20,7 @@ public class FplService : IFplService
         var data = await _client.GetAllFplData();
         var mappedPlayers = MapPlayers(data);
         await _repository.RemoveAllFplPlayersAsync();
-        await _repository.AddPlayersAsync(mappedPlayers.Select(p => p.ToEntity()));
+        await _repository.AddPlayersAsync(mappedPlayers);
         return mappedPlayers;
     }
 
@@ -34,7 +33,7 @@ public class FplService : IFplService
                 FirstName = p.first_name,
                 LastName = p.second_name,
                 Team = response.teams.First(t => t.id == p.team).short_name,
-                Position = response.element_types.First(e => e.id == p.element_type).singular_name_short,
+                Position = Enum.Parse<Position>(response.element_types.First(e => e.id == p.element_type).singular_name_short),
                 Value = p.now_cost / 10.0,
                 TotalPointsPreviousYear = p.total_points,
                 IsInFpl = true

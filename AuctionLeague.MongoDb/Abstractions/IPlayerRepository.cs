@@ -1,14 +1,14 @@
-﻿using AuctionLeague.MongoDb.Entities;
+﻿using AuctionLeague.Data;
 
 namespace AuctionLeague.MongoDb.Abstractions;
 
 public interface IPlayerRepository
 {
-    Task<List<PlayerEntity>> GetPlayersAsync();
-    Task<PlayerEntity> GetPlayerAsync(int playerId);
-    Task AddPlayerAsync(PlayerEntity newPlayer);
-    Task AddPlayersAsync(IEnumerable<PlayerEntity> newPlayer);
-    Task UpdatePlayerAsync(int playerId, PlayerEntity updatedPlayer);
+    Task<List<Player>> GetPlayersAsync();
+    Task<Player> GetPlayerAsync(int playerId);
+    Task AddPlayerAsync(Player newPlayer);
+    Task AddPlayersAsync(IEnumerable<Player> newPlayer);
+    Task UpdatePlayerAsync(int playerId, Player updatedPlayer);
     Task RemovePlayerAsync(int playerId);
     Task RemoveAllFplPlayersAsync();
 }

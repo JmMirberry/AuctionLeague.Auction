@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Fpl", "Auctio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Data", "AuctionLeague.Data\AuctionLeague.Data.csproj", "{9C20CE61-ED11-44B0-8DBC-2F785C639887}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Service", "AuctionLeague.Service\AuctionLeague.Service.csproj", "{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9C20CE61-ED11-44B0-8DBC-2F785C639887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C20CE61-ED11-44B0-8DBC-2F785C639887}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C20CE61-ED11-44B0-8DBC-2F785C639887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

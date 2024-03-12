@@ -1,10 +1,8 @@
 using AuctionLeague.Data;
 using AuctionLeague.Fpl;
-using AuctionLeague.MongoDb.Entities;
-using AuctionLeague.MongoDb.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SlackAPI.Controllers
+namespace AuctionLeague.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

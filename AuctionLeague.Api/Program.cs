@@ -1,14 +1,17 @@
 using AuctionLeague.AuctionService;
 using AuctionLeague.Fpl;
+using AuctionLeague.MongoDb;
+using AuctionLeague.MongoDb.Abstractions;
+using AuctionLeague.MongoDb.Repositories;
+using AuctionLeague.Service;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
 using SlackNet.AspNetCore;
 using SlackNet.Events;
-using AuctionLeague.MongoDb;
-using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.MongoDb.Repositories;
 
-internal class Program
+namespace AuctionLeague;
+
+public class Program
 {
     public static void Main(string[] args)
     {
@@ -32,10 +35,8 @@ builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(
 
         ConfigureSettings(builder);
 
-        builder.Services.AddSingleton<IPlayerRepository,PlayerRepository>();
-        builder.Services.AddHttpClient<FplClient>();
-        builder.Services.AddSingleton<IFplClient, FplClient>();
-        builder.Services.AddSingleton<IFplService, FplService>();
+        AddRepositories(builder.Services);
+        AddServices(builder);
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
@@ -51,6 +52,23 @@ builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(
         app.Run();
     }
 
+    private static void AddServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddHttpClient<FplClient>();
+        builder.Services.AddSingleton<IFplClient, FplClient>();
+        builder.Services.AddSingleton<IFplService, FplService>();
+        builder.Services.AddSingleton<IPlayerSaleService, PlayerSaleService>();
+        builder.Services.AddSingleton<IAutoNominationService, AutoNominationService>();
+    }
+
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddSingleton<IPlayerRepository, PlayerRepository>();
+        services.AddSingleton<IAuctionTeamRepository, AuctionTeamRepository>();
+        services.AddSingleton<ISoldDataRepository, SoldDataRepository>();
+        services.AddSingleton<IAutoNominationRepository, AutoNominationRepository>();
+    }
+
     private static void ConfigureSettings(WebApplicationBuilder builder)
     {
         builder.Services.Configure<MongoDbSettings>(
@@ -61,4 +79,3 @@ builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(
             builder.Configuration.GetSection("Fpl"));
     }
 }
-
