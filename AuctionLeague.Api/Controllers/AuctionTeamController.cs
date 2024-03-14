@@ -76,8 +76,8 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
         
-        [HttpDelete("/{auctionTeamName:length(24)}")]
-        [Route("/remove-players")]
+        [HttpDelete]
+        [Route("/remove-players/{auctionTeamName}")]
         public async Task<IActionResult> DeletePlayers(string auctionTeamName)
         {
             var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
@@ -92,7 +92,7 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
         
-        [HttpDelete()]
+        [HttpDelete]
         [Route("/remove-all-players")]
         public async Task<IActionResult> DeletePlayersFromAllTeams(string auctionTeamName)
         {
@@ -108,7 +108,8 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{AuctionTeamId:length(24)}")]
+        [HttpDelete]
+        [Route("delete-team/{auctionTeamName}")]
         public async Task<IActionResult> Delete(string auctionTeamName)
         {
             var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
@@ -123,7 +124,7 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
 
-        [HttpDelete()]
+        [HttpDelete]
         [Route("delete-all")]
         public async Task<IActionResult> DeleteAuctionTeams()
         {

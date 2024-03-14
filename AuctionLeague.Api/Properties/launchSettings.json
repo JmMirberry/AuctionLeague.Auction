@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "SlackAPI": {
+    "Auction": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
