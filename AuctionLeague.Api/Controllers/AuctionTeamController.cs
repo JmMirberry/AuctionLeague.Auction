@@ -20,6 +20,7 @@ namespace AuctionLeague.Controllers
         }
 
         [HttpGet]
+        [Route("all-teams")]
         public async Task<IEnumerable<AuctionTeam>> Get() =>
             await _auctionTeamsRepository.GetAuctionTeamsAsync();
 

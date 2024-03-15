@@ -1,5 +1,6 @@
 using AuctionLeague.Data;
 using AuctionLeague.MongoDb;
+using System.Numerics;
 
 public static class AuctionTeamMapper
 {
@@ -10,7 +11,7 @@ public static class AuctionTeamMapper
             _id = team.TeamName,
             TeamName = team.TeamName,
             SlackBidders = team.SlackBidders,
-            Players = team.Players.Select(p => new SoldPlayerEntity(p.ToEntity(), p.SalePrice)),
+            Players = team.Players.Select(p => p.ToSoldPlayerEntity()),
         };
     }
 
@@ -20,7 +21,13 @@ public static class AuctionTeamMapper
         {
             TeamName = team.TeamName,
             SlackBidders = team.SlackBidders.ToList(),
-            Players = team.Players.Select(p => new SoldPlayer(p.ToPlayer(), p.SalePrice)).ToList(),
+            Players = team.Players.Select(p => new SoldPlayer(p.ToPlayer(), p.SalePrice) ).ToList(),
         };
+}
+
+    public static SoldPlayerEntity ToSoldPlayerEntity(this SoldPlayer player)
+    {
+
+        return new SoldPlayerEntity(player.ToEntity(), player.SalePrice);
     }
 }

@@ -45,7 +45,7 @@ namespace AuctionLeague.MongoDb.Repositories
 
         public async Task AddPlayerToAuctionTeamAsync(string teamName, SoldPlayer soldPlayer)
         {
-            var pushPlayerDefinition = Builders<AuctionTeamEntity>.Update.Push(t => t.Players, soldPlayer.ToEntity());
+            var pushPlayerDefinition = Builders<AuctionTeamEntity>.Update.Push(t => t.Players, soldPlayer.ToSoldPlayerEntity());
             await _auctionTeamsCollection.UpdateOneAsync(x => x.TeamName == teamName, pushPlayerDefinition);
         }
 
