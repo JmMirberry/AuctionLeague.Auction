@@ -8,47 +8,56 @@ namespace AuctionLeague.MongoDb.Repositories
 {
     public class AuctionTeamRepository : BaseRepository, IAuctionTeamRepository
     {
-        private readonly IMongoCollection<AuctionTeam> _auctionTeamsCollection;
+        private readonly IMongoCollection<AuctionTeamEntity> _auctionTeamsCollection;
 
         public AuctionTeamRepository(
             IOptions<MongoDbSettings> settings) : base(settings)
         {
-            _auctionTeamsCollection = mongoDatabase.GetCollection<AuctionTeam>("AuctionTeams");
+            _auctionTeamsCollection = mongoDatabase.GetCollection<AuctionTeamEntity>("AuctionTeams");
         }
 
-        public async Task<List<AuctionTeam>> GetAuctionTeamsAsync() =>
-            await _auctionTeamsCollection.Find(_ => true).ToListAsync();
+        public async Task<IEnumerable<AuctionTeam>> GetAuctionTeamsAsync()
+        {
+            var entities = await _auctionTeamsCollection.Find(_ => true).ToListAsync();
+            return entities?.Select(t => t.ToTeam());
+        }
 
-        public async Task<AuctionTeam> GetAuctionTeamAsync(string teamName) =>
-            await _auctionTeamsCollection.Find(x => x.TeamName == teamName).FirstOrDefaultAsync();
+        public async Task<AuctionTeam> GetAuctionTeamAsync(string teamName)
+        {
+            var entity = await _auctionTeamsCollection.Find(x => x.TeamName == teamName).FirstOrDefaultAsync();
+            return entity?.ToTeam();
+        }
 
-        public async Task<AuctionTeam> GetAuctionTeamByBidderAsync(string bidder) =>
-        await _auctionTeamsCollection.Find(x => x.SlackBidders.Any(x => x == bidder)).FirstOrDefaultAsync();
 
+        public async Task<AuctionTeam> GetAuctionTeamByBidderAsync(string bidder)
+        {
+            var entity = await _auctionTeamsCollection.Find(x => x.SlackBidders.Any(x => x == bidder)).FirstOrDefaultAsync();
+            return entity?.ToTeam();
+        }
         public async Task AddAuctionTeamAsync(AuctionTeam newAuctionTeam) =>
-            await _auctionTeamsCollection.InsertOneAsync(newAuctionTeam);
+            await _auctionTeamsCollection.InsertOneAsync(newAuctionTeam.ToEntity());
 
         public async Task AddAuctionTeamsAsync(IEnumerable<AuctionTeam> newAuctionTeam) =>
-            await _auctionTeamsCollection.InsertManyAsync(newAuctionTeam);
+            await _auctionTeamsCollection.InsertManyAsync(newAuctionTeam.Select(t => t.ToEntity()));
 
         public async Task UpdateAuctionTeamAsync(AuctionTeam updatedAuctionTeam) =>
-            await _auctionTeamsCollection.ReplaceOneAsync(x => x.TeamName == updatedAuctionTeam.TeamName, updatedAuctionTeam);
+            await _auctionTeamsCollection.ReplaceOneAsync(x => x.TeamName == updatedAuctionTeam.TeamName, updatedAuctionTeam.ToEntity());
 
         public async Task AddPlayerToAuctionTeamAsync(string teamName, SoldPlayer soldPlayer)
         {
-            var pushPlayerDefinition = Builders<AuctionTeam>.Update.Push(t => t.Players, soldPlayer);
+            var pushPlayerDefinition = Builders<AuctionTeamEntity>.Update.Push(t => t.Players, soldPlayer.ToEntity());
             await _auctionTeamsCollection.UpdateOneAsync(x => x.TeamName == teamName, pushPlayerDefinition);
         }
 
         public async Task RemovePlayersFromAuctionTeamAsync(string teamName)
         {
-            var players = Builders<AuctionTeam>.Update.PullAll("Players",  new BsonArray());
+            var players = Builders<AuctionTeamEntity>.Update.PullAll("Players",  new BsonArray());
             await _auctionTeamsCollection.UpdateOneAsync(x => x.TeamName == teamName, players);
         }
         
         public async Task RemovePlayersFromAllAuctionTeams()
         {
-            var players = Builders<AuctionTeam>.Update.PullAll("Players",  new BsonArray());
+            var players = Builders<AuctionTeamEntity>.Update.PullAll("Players",  new BsonArray());
             await _auctionTeamsCollection.UpdateManyAsync(_ => true, players);
         }
 

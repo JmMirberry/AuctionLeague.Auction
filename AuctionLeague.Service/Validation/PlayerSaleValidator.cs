@@ -6,7 +6,7 @@ namespace AuctionLeague.Service.Validation
     {
         public static PlayerSaleValidationResult ValidateSale(AuctionTeam team, SoldPlayer soldPlayer)
         {
-            var playersRemaining = 11 - team.Players.Count;
+            var playersRemaining = 11 - team.Players.Count();
 
             if (playersRemaining <= 0) return PlayerSaleValidationResult.Fail("Team is already complete");
 

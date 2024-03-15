@@ -20,7 +20,7 @@ namespace AuctionLeague.Controllers
         }
 
         [HttpGet]
-        public async Task<List<AuctionTeam>> Get() =>
+        public async Task<IEnumerable<AuctionTeam>> Get() =>
             await _auctionTeamsRepository.GetAuctionTeamsAsync();
 
         [HttpGet("{AuctionTeamName:length(24)}")]

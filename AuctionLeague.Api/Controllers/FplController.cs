@@ -14,6 +14,6 @@ namespace AuctionLeague.Controllers
             _fplService = fplService;
 
         [HttpGet]
-        public async Task<List<Player>> Get() => await _fplService.PopulateFplData();
+        public async Task<IEnumerable<Player>> Get() => await _fplService.PopulateFplData();
     }
 }

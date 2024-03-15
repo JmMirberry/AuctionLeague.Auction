@@ -1,9 +1,10 @@
-﻿
-namespace AuctionLeague.Data;
+﻿using AuctionLeague.Data;
 
-public class SoldPlayer : Player
+namespace AuctionLeague.MongoDb;
+
+public class SoldPlayerEntity : PlayerEntity
 {
-    public SoldPlayer(Player player, double salePrice)
+    public SoldPlayerEntity(PlayerEntity player, double salePrice)
     {
         PlayerId = player.PlayerId;
         FirstName = player.FirstName;
@@ -16,9 +17,6 @@ public class SoldPlayer : Player
         SalePrice = salePrice;
     }
 
-    public SoldPlayer()
-    {
-    }
-
+    public SoldPlayerEntity() { }
     public double SalePrice { get; set; }
 }

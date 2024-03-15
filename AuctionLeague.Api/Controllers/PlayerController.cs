@@ -14,7 +14,7 @@ namespace AuctionLeague.Controllers
             _playersRepository = playersRepository;
 
         [HttpGet]
-        public async Task<List<Player>> Get() =>
+        public async Task<IEnumerable<Player>> Get() =>
             await _playersRepository.GetPlayersAsync();
 
         [HttpGet("{playerId:length(24)}")]

@@ -7,28 +7,35 @@ namespace AuctionLeague.MongoDb.Repositories
 {
     public class PlayerRepository : BaseRepository, IPlayerRepository
     {
-        private readonly IMongoCollection<Player> _playersCollection;
+        private readonly IMongoCollection<PlayerEntity> _playersCollection;
 
         public PlayerRepository(
             IOptions<MongoDbSettings> settings) : base(settings) 
         {
-            _playersCollection = mongoDatabase.GetCollection<Player>("Players");
+            _playersCollection = mongoDatabase.GetCollection<PlayerEntity>("Players");
         }
 
-        public async Task<List<Player>> GetPlayersAsync() =>
+        public async Task<IEnumerable<Player>> GetPlayersAsync()
+        {
+            var entities =
             await _playersCollection.Find(_ => true).ToListAsync();
+            return entities?.Select(e => e.ToPlayer());
+        }
 
-        public async Task<Player> GetPlayerAsync(int playerId) =>
+        public async Task<Player> GetPlayerAsync(int playerId)
+        {
+            var entity =
             await _playersCollection.Find(x => x.PlayerId == playerId).FirstOrDefaultAsync();
-
+            return entity?.ToPlayer();
+        }
         public async Task AddPlayerAsync(Player newPlayer) =>
-            await _playersCollection.InsertOneAsync(newPlayer);
+            await _playersCollection.InsertOneAsync(newPlayer.ToEntity());
         
         public async Task AddPlayersAsync(IEnumerable<Player> newPlayer) =>
-            await _playersCollection.InsertManyAsync(newPlayer);
+            await _playersCollection.InsertManyAsync(newPlayer.Select(p=>p.ToEntity()));
 
         public async Task UpdatePlayerAsync(int playerId, Player updatedPlayer) =>
-            await _playersCollection.ReplaceOneAsync(x => x.PlayerId == playerId, updatedPlayer);
+            await _playersCollection.ReplaceOneAsync(x => x.PlayerId == playerId, updatedPlayer.ToEntity());
 
         public async Task RemovePlayerAsync(int playerId) =>
             await _playersCollection.DeleteOneAsync(x => x.PlayerId == playerId);

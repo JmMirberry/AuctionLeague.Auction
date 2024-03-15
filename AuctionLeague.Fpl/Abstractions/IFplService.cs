@@ -4,5 +4,5 @@ namespace AuctionLeague.Fpl;
 
 public interface IFplService
 {
-    Task<List<Player>> PopulateFplData();
+    Task<IEnumerable<Player>> PopulateFplData();
 }

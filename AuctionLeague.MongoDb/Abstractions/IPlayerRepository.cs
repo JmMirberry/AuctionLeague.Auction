@@ -4,7 +4,7 @@ namespace AuctionLeague.MongoDb.Abstractions;
 
 public interface IPlayerRepository
 {
-    Task<List<Player>> GetPlayersAsync();
+    Task<IEnumerable<Player>> GetPlayersAsync();
     Task<Player> GetPlayerAsync(int playerId);
     Task AddPlayerAsync(Player newPlayer);
     Task AddPlayersAsync(IEnumerable<Player> newPlayer);

@@ -4,7 +4,7 @@ namespace AuctionLeague.MongoDb.Abstractions
 {
     public interface ISoldDataRepository
     {
-        Task<List<SoldData>> GetSoldDataAsync();
+        Task<IEnumerable<SoldData>> GetSoldDataAsync();
 
         Task<SoldData> GetSoldDataAsync(int playerId);
 

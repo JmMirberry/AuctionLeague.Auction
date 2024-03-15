@@ -4,11 +4,11 @@ namespace AuctionLeague.MongoDb.Abstractions
 {
     public interface IAutoNominationRepository
     {
-        Task<List<Player>> GetAutoNominationsAsync();
+        Task<IEnumerable<Player>> GetAutoNominationsAsync();
         
-        Task<List<Player>> GetAutoNominationsForPositionAsync(Position position);
+        Task<IEnumerable<Player>> GetAutoNominationsForPositionAsync(Position position);
         
-        Task SaveAutoNominationDataAsync(List<Player> data);
+        Task SaveAutoNominationDataAsync(IEnumerable<Player> data);
 
         Task RemoveAutonominationDataAsync();
     }

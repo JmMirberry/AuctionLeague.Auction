@@ -22,7 +22,7 @@ public class AutoNominationService : IAutoNominationService
         await SetAutoNomination(settings, players);
     }
 
-    private async Task SetAutoNomination(List<AutonominationSettings> settings, List<Player> players)
+    private async Task SetAutoNomination(List<AutonominationSettings> settings, IEnumerable<Player> players)
     {
         var playersByPosition = players.GroupBy(x => x.Position);
 
@@ -40,9 +40,9 @@ public class AutoNominationService : IAutoNominationService
 
     public async Task<Player> GetAutoNomination()
     {
-        var players = await _repository.GetAutoNominationsAsync();
+        var players = (await _repository.GetAutoNominationsAsync()).ToList();
         var random = new Random();
-        var randomIndex = random.Next(0, players.Count);
+        var randomIndex = random.Next(0, players.Count());
 
         return players[randomIndex];
     }

@@ -5,7 +5,7 @@ namespace AuctionLeague.MongoDb.Abstractions
     public interface IAuctionTeamRepository
     {
 
-        Task<List<AuctionTeam>> GetAuctionTeamsAsync();
+        Task<IEnumerable<AuctionTeam>> GetAuctionTeamsAsync();
 
         Task<AuctionTeam> GetAuctionTeamAsync(string teamName);
 

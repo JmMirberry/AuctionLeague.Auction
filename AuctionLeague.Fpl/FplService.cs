@@ -15,7 +15,7 @@ public class FplService : IFplService
         _repository = repository;
     }
 
-    public async Task<List<Player>> PopulateFplData()
+    public async Task<IEnumerable<Player>> PopulateFplData()
     {
         var data = await _client.GetAllFplData();
         var mappedPlayers = MapPlayers(data);
@@ -24,20 +24,19 @@ public class FplService : IFplService
         return mappedPlayers;
     }
 
-    private static List<Player> MapPlayers(FplResponse response)
+    private static IEnumerable<Player> MapPlayers(FplResponse response)
     {
-        var mappedPlayers = response.elements.Select(p =>
-            new Player
-            {
-                PlayerId = p.id,
-                FirstName = p.first_name,
-                LastName = p.second_name,
-                Team = response.teams.First(t => t.id == p.team).short_name,
-                Position = Enum.Parse<Position>(response.element_types.First(e => e.id == p.element_type).singular_name_short),
-                Value = p.now_cost / 10.0,
-                TotalPointsPreviousYear = p.total_points,
-                IsInFpl = true
-            }).ToList();
-        return mappedPlayers;
+        return response.elements.Select(p =>
+             new Player
+             {
+                 PlayerId = p.id,
+                 FirstName = p.first_name,
+                 LastName = p.second_name,
+                 Team = response.teams.First(t => t.id == p.team).short_name,
+                 Position = Enum.Parse<Position>(response.element_types.First(e => e.id == p.element_type).singular_name_short),
+                 Value = p.now_cost / 10.0,
+                 TotalPointsPreviousYear = p.total_points,
+                 IsInFpl = true
+             });
     }
 }
