@@ -37,7 +37,7 @@ namespace AuctionLeague.Controllers
             return auctionTeam;
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Post(AuctionTeam newAuctionTeam)
         {
             await _auctionTeamsRepository.AddAuctionTeamAsync(newAuctionTeam);
@@ -45,7 +45,7 @@ namespace AuctionLeague.Controllers
             return CreatedAtAction(nameof(Get), newAuctionTeam);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("add-player")]
         public async Task<IActionResult> AddPlayer(string teamName, SoldPlayer player)
         {
@@ -63,6 +63,7 @@ namespace AuctionLeague.Controllers
         }
 
         [HttpPut("{auctionTeamName:length(24)}")]
+        [Route("update")]
         public async Task<IActionResult> Update(string auctionTeamName, AuctionTeam updatedAuctionTeam)
         {
             var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
