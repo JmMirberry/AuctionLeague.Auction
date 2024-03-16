@@ -62,7 +62,7 @@ namespace AuctionLeague.Controllers
             
         }
 
-        [HttpPut("{auctionTeamName:length(24)}")]
+        [HttpPut]
         [Route("update")]
         public async Task<IActionResult> Update(string auctionTeamName, AuctionTeam updatedAuctionTeam)
         {
