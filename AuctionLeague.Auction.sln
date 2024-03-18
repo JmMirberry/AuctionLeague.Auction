@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Api", "AuctionLeague.Api\AuctionLeague.Api.csproj", "{6EFF8EBB-681C-4ABC-AC94-984CBE7BA313}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionLeague.Api", "AuctionLeague.Api\AuctionLeague.Api.csproj", "{6EFF8EBB-681C-4ABC-AC94-984CBE7BA313}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.AuctionService", "AuctionLeague.AuctionService\AuctionLeague.AuctionService.csproj", "{33DFB078-B67E-4F1F-B2DF-FC6DF7927B36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionLeague.MongoDb", "AuctionLeague.MongoDb\AuctionLeague.MongoDb.csproj", "{7EDDC4EA-1FEF-4AEC-BC07-32E66FA4D05E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.MongoDb", "AuctionLeague.MongoDb\AuctionLeague.MongoDb.csproj", "{7EDDC4EA-1FEF-4AEC-BC07-32E66FA4D05E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionLeague.Fpl", "AuctionLeague.Fpl\AuctionLeague.Fpl.csproj", "{F211D235-78C7-49FA-96B8-10A106964A4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Fpl", "AuctionLeague.Fpl\AuctionLeague.Fpl.csproj", "{F211D235-78C7-49FA-96B8-10A106964A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionLeague.Data", "AuctionLeague.Data\AuctionLeague.Data.csproj", "{9C20CE61-ED11-44B0-8DBC-2F785C639887}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Data", "AuctionLeague.Data\AuctionLeague.Data.csproj", "{9C20CE61-ED11-44B0-8DBC-2F785C639887}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionLeague.Service", "AuctionLeague.Service\AuctionLeague.Service.csproj", "{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionLeague.Service", "AuctionLeague.Service\AuctionLeague.Service.csproj", "{AA3A1015-7F58-49CA-AF1C-24238DAEAD00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{6EFF8EBB-681C-4ABC-AC94-984CBE7BA313}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EFF8EBB-681C-4ABC-AC94-984CBE7BA313}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EFF8EBB-681C-4ABC-AC94-984CBE7BA313}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33DFB078-B67E-4F1F-B2DF-FC6DF7927B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33DFB078-B67E-4F1F-B2DF-FC6DF7927B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33DFB078-B67E-4F1F-B2DF-FC6DF7927B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33DFB078-B67E-4F1F-B2DF-FC6DF7927B36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7EDDC4EA-1FEF-4AEC-BC07-32E66FA4D05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EDDC4EA-1FEF-4AEC-BC07-32E66FA4D05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EDDC4EA-1FEF-4AEC-BC07-32E66FA4D05E}.Release|Any CPU.ActiveCfg = Release|Any CPU

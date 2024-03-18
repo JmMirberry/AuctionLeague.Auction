@@ -1,9 +1,9 @@
 using AuctionLeague.Data;
 using AuctionLeague.Data.Exceptions;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.Service.Validation;
+using AuctionLeague.Service.PlayerSale.Validation;
 
-namespace AuctionLeague.Service
+namespace AuctionLeague.Service.PlayerSale
 {
     public class PlayerSaleService : IPlayerSaleService
     {
@@ -61,7 +61,7 @@ namespace AuctionLeague.Service
             await Task.WhenAll(playerTask, teamTask);
             var player = playerTask.Result;
             var team = teamTask.Result;
-            
+
             var soldPlayer = new SoldPlayer(player, salePrice);
 
 

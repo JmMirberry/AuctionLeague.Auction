@@ -1,6 +1,6 @@
 ﻿using AuctionLeague.Data;
 
-namespace AuctionLeague.Service;
+namespace AuctionLeague.Service.PlayerSale;
 
 public interface IPlayerSaleService
 {

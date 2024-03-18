@@ -1,7 +1,7 @@
 using AuctionLeague.Data;
 using AuctionLeague.Data.Exceptions;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.Service;
+using AuctionLeague.Service.PlayerSale;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionLeague.Controllers

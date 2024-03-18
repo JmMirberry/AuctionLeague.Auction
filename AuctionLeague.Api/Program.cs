@@ -1,9 +1,9 @@
-using AuctionLeague.AuctionService;
 using AuctionLeague.Fpl;
 using AuctionLeague.MongoDb;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.MongoDb.Repositories;
 using AuctionLeague.Service;
+using AuctionLeague.Service.PlayerSale;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
 using SlackNet.AspNetCore;

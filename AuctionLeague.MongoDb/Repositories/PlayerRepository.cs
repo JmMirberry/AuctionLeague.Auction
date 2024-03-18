@@ -28,6 +28,14 @@ namespace AuctionLeague.MongoDb.Repositories
             await _playersCollection.Find(x => x.PlayerId == playerId).FirstOrDefaultAsync();
             return entity?.ToPlayer();
         }
+
+        public async Task<IEnumerable<Player>> GetPlayerAsync(string lastNameSearch)
+        {
+            var entities =
+            await _playersCollection.Find(x => x.LastName.Contains(lastNameSearch)).ToListAsync();
+            return entities?.Select(e => e.ToPlayer());
+        }
+
         public async Task AddPlayerAsync(Player newPlayer) =>
             await _playersCollection.InsertOneAsync(newPlayer.ToEntity());
         

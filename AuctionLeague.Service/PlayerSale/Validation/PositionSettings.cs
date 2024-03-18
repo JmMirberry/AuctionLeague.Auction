@@ -1,6 +1,6 @@
 using AuctionLeague.Data;
 
-namespace AuctionLeague.Service.Validation
+namespace AuctionLeague.Service.PlayerSale.Validation
 {
     public static class PositionSettings
     {

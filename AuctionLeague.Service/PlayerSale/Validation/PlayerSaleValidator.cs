@@ -1,6 +1,6 @@
 using AuctionLeague.Data;
 
-namespace AuctionLeague.Service.Validation
+namespace AuctionLeague.Service.PlayerSale.Validation
 {
     public static class PlayerSaleResultValidator
     {
@@ -32,7 +32,7 @@ namespace AuctionLeague.Service.Validation
 
             if (playersRequiredForMinimums > playersRemaining - 1)
             {
-                return PlayerSaleValidationResult.Fail( $"Invalid sale to {team.TeamName} cannot purchase another {playerPosition}" );
+                return PlayerSaleValidationResult.Fail($"Invalid sale to {team.TeamName} cannot purchase another {playerPosition}");
             }
 
             return PlayerSaleValidationResult.Pass();

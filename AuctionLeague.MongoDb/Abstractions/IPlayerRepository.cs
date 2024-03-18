@@ -6,6 +6,7 @@ public interface IPlayerRepository
 {
     Task<IEnumerable<Player>> GetPlayersAsync();
     Task<Player> GetPlayerAsync(int playerId);
+    Task<IEnumerable<Player>> GetPlayerAsync(string lastNameSearch);
     Task AddPlayerAsync(Player newPlayer);
     Task AddPlayersAsync(IEnumerable<Player> newPlayer);
     Task UpdatePlayerAsync(int playerId, Player updatedPlayer);

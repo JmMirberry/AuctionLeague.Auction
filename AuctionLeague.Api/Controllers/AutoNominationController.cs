@@ -1,5 +1,5 @@
-using AuctionLeague.AuctionService;
 using AuctionLeague.Data;
+using AuctionLeague.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionLeague.Controllers
