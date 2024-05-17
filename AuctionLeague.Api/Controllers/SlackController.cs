@@ -11,11 +11,14 @@ namespace SlackAPI.Controllers
         private readonly ISlackRequestHandler _requestHandler;
         private readonly SlackEndpointConfiguration _endpointConfig;
         private readonly ISlackApiClient _slack;
-        public SlackController(ISlackRequestHandler requestHandler, SlackEndpointConfiguration endpointConfig, ISlackApiClient slack)
+        private readonly ISlashCommandHandler _commandHandler;
+
+        public SlackController(ISlackRequestHandler requestHandler, SlackEndpointConfiguration endpointConfig, ISlackApiClient slack, ISlashCommandHandler commandHandler)
         {
             _requestHandler = requestHandler;
             _endpointConfig = endpointConfig;
             _slack = slack;
+            _commandHandler = commandHandler;
         }
 
         [HttpPost]
@@ -31,6 +34,13 @@ namespace SlackAPI.Controllers
         public async Task<IActionResult> Event()
         {
              return await _requestHandler.HandleEventRequest(HttpContext.Request, _endpointConfig);
+        }
+
+        [HttpPost]
+        [Route("[Controller]/Command")]
+        public async Task<IActionResult> Command()
+        {
+             return await _commandHandler.Handle(HttpContext.Request, _endpointConfig);
         }
 
     }

@@ -22,7 +22,7 @@ namespace AuctionLeague.Service.PlayerSale.Validation
                 {
                     if (playersPurchasedInPosition == position.MaxPlayers)
                     {
-                        return PlayerSaleValidationResult.Fail($"Invalid sale {team.TeamName} already has {position.MaxPlayers} {playerPosition}s");
+                        return PlayerSaleValidationResult.Fail($"{team.TeamName} already has {position.MaxPlayers} {playerPosition}s");
                     }
                     break;
                 }
@@ -32,7 +32,7 @@ namespace AuctionLeague.Service.PlayerSale.Validation
 
             if (playersRequiredForMinimums > playersRemaining - 1)
             {
-                return PlayerSaleValidationResult.Fail($"Invalid sale to {team.TeamName} cannot purchase another {playerPosition}");
+                return PlayerSaleValidationResult.Fail($"{team.TeamName} cannot purchase another {playerPosition}");
             }
 
             return PlayerSaleValidationResult.Pass();
