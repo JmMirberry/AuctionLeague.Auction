@@ -41,6 +41,7 @@ namespace SlackAPI.Controllers
         [Route("[Controller]/Command")]
         public async Task<IActionResult> Command([FromBody] SlashCommand command)
         {
+            System.Diagnostics.Trace.TraceError("Log test");
             var result = await _commandHandler.Handle(command);
             return Ok(result);
         }
