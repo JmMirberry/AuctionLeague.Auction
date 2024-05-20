@@ -40,8 +40,8 @@ builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
-            .RegisterEventHandler<MessageEvent, PingHandler>());
-            //.RegisterSlashCommandHandler<EchoDemo>());
+            .RegisterEventHandler<MessageEvent, PingHandler>()
+            .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand));
 
         var app = builder.Build();
 
