@@ -12,14 +12,16 @@ namespace SlackAPI.Controllers
         private readonly ISlackRequestHandler _requestHandler;
         private readonly SlackEndpointConfiguration _endpointConfig;
         private readonly ISlackApiClient _slack;
-        private readonly ISlashCommandHandler _commandHandler;
+        //private readonly ISlashCommandHandler _commandHandler;
 
-        public SlackController(ISlackRequestHandler requestHandler, SlackEndpointConfiguration endpointConfig, ISlackApiClient slack, ISlashCommandHandler commandHandler)
+        public SlackController(ISlackRequestHandler requestHandler, SlackEndpointConfiguration endpointConfig, ISlackApiClient slack
+            //, ISlashCommandHandler commandHandler
+            )
         {
             _requestHandler = requestHandler;
             _endpointConfig = endpointConfig;
             _slack = slack;
-            _commandHandler = commandHandler;
+            //_commandHandler = commandHandler;
         }
 
         [HttpPost]
@@ -37,14 +39,14 @@ namespace SlackAPI.Controllers
              return await _requestHandler.HandleEventRequest(HttpContext.Request, _endpointConfig);
         }
 
-        [HttpPost]
-        [Route("[Controller]/Command")]
-        public async Task<IActionResult> Command([FromBody] SlashCommand command)
-        {
-            System.Diagnostics.Trace.TraceError("Log test");
-            var result = await _commandHandler.Handle(command);
-            return Ok(result);
-        }
+        //[HttpPost]
+        //[Route("[Controller]/Command")]
+        //public async Task<IActionResult> Command([FromBody] SlashCommand command)
+        //{
+        //    System.Diagnostics.Trace.TraceError("Log test");
+        //    var result = await _commandHandler.Handle(command);
+        //    return Ok(result);
+        //}
 
     }
 }
