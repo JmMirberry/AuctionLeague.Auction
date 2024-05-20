@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SlackAPI.Models;
 using SlackNet;
 using SlackNet.AspNetCore;
+using SlackNet.Interaction;
 
 namespace SlackAPI.Controllers
 {
@@ -38,9 +39,10 @@ namespace SlackAPI.Controllers
 
         [HttpPost]
         [Route("[Controller]/Command")]
-        public async Task<IActionResult> Command()
+        public async Task<IActionResult> Command([FromBody] SlashCommand command)
         {
-             return await _commandHandler.Handle(HttpContext.Request, _endpointConfig);
+            var result = await _commandHandler.Handle(command);
+            return Ok(result);
         }
 
     }
