@@ -8,6 +8,7 @@ using SlackAPI.Handlers;
 using SlackAPI.Models;
 using SlackNet.AspNetCore;
 using SlackNet.Events;
+using SlackNet.Interaction;
 
 namespace AuctionLeague;
 
@@ -26,11 +27,10 @@ public class Program
         var accessToken = Environment.GetEnvironmentVariable("SlackAccessToken") ?? settings.SlackAccessToken;
         var signingSecret = Environment.GetEnvironmentVariable("SlackSigningSecret") ?? settings.SlackSigningSecret;
 
-
 #if DEBUG
         builder.Services.AddSingleton(new SlackEndpointConfiguration());
 #else
-builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(signingSecret));
+        builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(signingSecret));
 #endif
 
         ConfigureSettings(builder);
@@ -42,6 +42,8 @@ builder.Services.AddSingleton(new SlackEndpointConfiguration().UseSigningSecret(
             .UseApiToken(accessToken)
             .RegisterEventHandler<MessageEvent, PingHandler>()
             .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand));
+
+        builder.Services.AddSingleton<ISlashCommandHandler, EchoDemo>();
 
         var app = builder.Build();
 
