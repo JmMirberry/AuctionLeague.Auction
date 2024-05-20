@@ -1,3 +1,4 @@
+using Amazon.Runtime.Internal;
 using Microsoft.AspNetCore.Mvc;
 using SlackAPI.Models;
 using SlackNet;
@@ -39,11 +40,15 @@ namespace SlackAPI.Controllers
 
         [HttpPost]
         [Route("[Controller]/Command")]
-        public async Task<IActionResult> Command([FromBody] SlashCommand command)
+        public async Task<IActionResult> Command()
         {
+            //var request = HttpContext.Request.Form;
+            await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = "command is here", Channel = "dev" }, null);
             System.Diagnostics.Trace.TraceError("Log test");
-            var result = await _commandHandler.Handle(command);
-            return Ok(result);
+            return Ok();
+            System.Diagnostics.Trace.TraceError("Log test");
+           // var result = await _commandHandler.Handle(command);
+            //return Ok(result);
         }
 
     }
