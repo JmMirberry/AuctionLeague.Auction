@@ -42,8 +42,8 @@ namespace SlackAPI.Controllers
         [Route("[Controller]/Command")]
         public async Task<IActionResult> Command()
         {
-            //var request = HttpContext.Request.Form;
-            await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = "command is here", Channel = "dev" }, null);
+            var command = HttpContext.Request.Form["command"];
+            await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = command.ToString(), Channel = "dev" }, null);
             System.Diagnostics.Trace.TraceError("Log test");
             return Ok();
             System.Diagnostics.Trace.TraceError("Log test");
