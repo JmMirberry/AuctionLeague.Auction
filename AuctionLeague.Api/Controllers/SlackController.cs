@@ -42,13 +42,17 @@ namespace SlackAPI.Controllers
         [Route("[Controller]/Command")]
         public async Task<IActionResult> Command()
         {
-            var command = HttpContext.Request.Form["command"];
-            await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = command.ToString(), Channel = "dev" }, null);
-            System.Diagnostics.Trace.TraceError("Log test");
-            return Ok();
-            System.Diagnostics.Trace.TraceError("Log test");
-           // var result = await _commandHandler.Handle(command);
-            //return Ok(result);
+            var command = new SlashCommand
+            {
+                Command = HttpContext.Request.Form["command"],
+                ChannelId = HttpContext.Request.Form["channel_id"],
+                ChannelName = HttpContext.Request.Form["channel_name"],
+                Text = HttpContext.Request.Form["text"]
+            };
+            //await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = command.Text.ToString(), Channel = command.ChannelName }, null);
+            //return Ok();
+            var result = await _commandHandler.Handle(command);
+            return Ok(result);
         }
 
     }
