@@ -1,7 +1,7 @@
 ﻿using AuctionLeague.Data;
 using FluentResults;
 
-namespace AuctionLeague.Service
+namespace AuctionLeague.Service.Interfaces
 {
     public interface IApiAuctionService
     {

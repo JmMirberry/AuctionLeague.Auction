@@ -1,6 +1,6 @@
 ﻿using AuctionLeague.Data;
 
-namespace AuctionLeague.Service;
+namespace AuctionLeague.Service.Interfaces;
 
 public interface IAutoNominationService
 {

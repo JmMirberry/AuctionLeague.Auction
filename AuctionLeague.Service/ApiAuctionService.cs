@@ -1,5 +1,6 @@
 ﻿using AuctionLeague.Data;
 using AuctionLeague.MongoDb.Abstractions;
+using AuctionLeague.Service.Interfaces;
 using AuctionLeague.Service.PlayerSale;
 using FluentResults;
 using Microsoft.Extensions.Options;

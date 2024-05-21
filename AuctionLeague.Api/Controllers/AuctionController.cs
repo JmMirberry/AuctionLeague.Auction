@@ -1,4 +1,4 @@
-using AuctionLeague.Service;
+using AuctionLeague.Service.Interfaces;
 using AuctionLeague.Service.PlayerSale;
 using Microsoft.AspNetCore.Mvc;
 

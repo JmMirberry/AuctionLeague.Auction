@@ -1,5 +1,6 @@
 ﻿using AuctionLeague.Data;
 using AuctionLeague.MongoDb.Abstractions;
+using AuctionLeague.Service.Interfaces;
 using MongoDB.Driver.Linq;
 
 namespace AuctionLeague.Service;
