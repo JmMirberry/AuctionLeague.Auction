@@ -10,7 +10,6 @@ namespace AuctionLeague.Service.AutoNomination;
 public class AutoNominationService : IAutoNominationService
 {
     private readonly IAuctionPlayerRepository _playerRepository;
-    private readonly List<AutonominationSettings> _settings;
 
     public AutoNominationService( IAuctionPlayerRepository playerRepository)
     {
