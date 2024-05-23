@@ -1,71 +1,74 @@
 ﻿using AuctionLeague.Data;
 using AuctionLeague.Data.Slack;
-using AuctionLeague.Service.PlayerSale;
+using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.DataStore;
 using FluentResults;
-using Microsoft.Extensions.Options;
 
-namespace AuctionLeague.Service.Auction
-{
+namespace AuctionLeague.Service.Auction {
+    
+public class SlackAuctionManager : ISlackAuctionManager 
+    {      
+        private readonly IAuctionTimer _timer; 
+        private readonly DataStore<SlackAuctionData> _dataStore; 
 
-    public class SlackAuctionManager
-    {
-
-        private AuctionTimer _timer;
-        private readonly AuctionSettings _settings;
-        private readonly AuctionDataStore<SlackAuctionData> _dataStore;
-
-        public SlackAuctionManager(IOptions<AuctionSettings> settings, AuctionDataStore<SlackAuctionData> dataStore)
-        {
-            _settings = settings.Value;
+        public SlackAuctionManager(IAuctionTimer timer, DataStore<SlackAuctionData> dataStore)
+        { 
+            _timer = timer;
             _dataStore = dataStore;
         }
-
-        public Result StartAuction()
+        
+        public Result<Player> StartAuction() 
         {
-            if (_dataStore.Data.Player == null)
+            var player = _dataStore.Data?.Player; 
+            if (player == null)
             {
                 return Result.Fail("No player nominated");
-            }
-            _timer = new AuctionTimer(new SlackAuctionEventHandler(), _settings.TimeToSoldMs, _settings.TimeToOnceMs, _settings.TimeToTwiceMs);
-            _timer.StartTimer();
-            return Result.Ok();
+            }  
+            _timer.StartTimer();  
+            return Result.Ok(player);
         }
-
+        
         public void NominatePlayer(Player player, string bidder)
-        {
-            _dataStore.Data.Bidder = bidder;
-            _dataStore.Data.Bid = 1;
-            _dataStore.Data.Player = player;
+        {   
+            _dataStore.Data = new SlackAuctionData
+            {           
+                Bidder = bidder, 
+                Bid = 1, 
+                Player = player   
+            };
         }
-
+        
         public Player NominatedPlayer()
-        {
-            return _dataStore.Data.Player;
+        {     
+            return _dataStore.Data?.Player;
         }
-
+        
         public SlackAuctionData CurrentBid()
-        {
+        { 
             return _dataStore.Data;
         }
-
+        
         public void EndAuction()
-        {
-            _timer.ResetTimer();
+        {   
+            _timer.ResetTimer(); 
             ResetData();
-        }
-
+        } 
+        
         public void BidMade(int bid, string bidder)
-        {
-            _timer.RestartTimer();
+        {     
+            _timer.RestartTimer(); 
             _dataStore.Data.Bid = bid;
-            _dataStore.Data.Bidder = bidder;
-        }
-
-        private void ResetData()
-        {
-            _dataStore.Data.Bid = 0;
-            _dataStore.Data.Bidder = null;
-            _dataStore.Data.Player = null;
+            _dataStore.Data.Bidder = bidder;  
+        } 
+        
+        private void ResetData() 
+        {  
+            _dataStore.Data = new SlackAuctionData 
+            {  
+                Bidder = null,   
+                Bid = 0,  
+                Player = null 
+            };
         }
     }
 }

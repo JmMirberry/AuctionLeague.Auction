@@ -25,7 +25,7 @@ namespace SlackAPI.Controllers
 
         [HttpPost]
         [Route("[Controller]/Submit")]
-        public async Task<ActionResult> Submit([FromBody] SlackRequest request)
+        public async Task<ActionResult> Submit([FromBody] SlackMessageRequest request)
         {
             await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = request.Message, Channel = request.SlackChannel }, null);
             return Ok();

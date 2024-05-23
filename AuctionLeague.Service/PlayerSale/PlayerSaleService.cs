@@ -1,7 +1,7 @@
 using AuctionLeague.Data;
-using AuctionLeague.Data.Exceptions;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.Service.PlayerSale.Validation;
+using AuctionLeague.Service.Validation;
+using FluentResults;
 
 namespace AuctionLeague.Service.PlayerSale
 {
@@ -18,7 +18,7 @@ namespace AuctionLeague.Service.PlayerSale
             _playerRepository = playerRepository;
         }
 
-        public async Task ProcessSaleByBidder(SoldPlayer soldPlayer, string bidder, bool isSold)
+        public async Task<Result<SoldData>> ProcessSaleByBidder(SoldPlayer soldPlayer, string bidder, bool isSold)
         {
             var team = await GetAuctionTeamByBidder(bidder);
             if (team == null)
@@ -32,10 +32,10 @@ namespace AuctionLeague.Service.PlayerSale
                 await _auctionTeamsRepository.AddAuctionTeamAsync(team);
             }
 
-            await ProcessSale(soldPlayer, team, isSold);
+            return await ProcessSale(soldPlayer, team, isSold);
         }
 
-        public async Task ProcessSaleByTeamName(SoldPlayer soldPlayer, string teamName, bool isSold)
+        public async Task<Result<SoldData>> ProcessSaleByTeamName(SoldPlayer soldPlayer, string teamName, bool isSold)
         {
             var team = await _auctionTeamsRepository.GetAuctionTeamAsync(teamName);
 
@@ -48,11 +48,11 @@ namespace AuctionLeague.Service.PlayerSale
                 await _auctionTeamsRepository.AddAuctionTeamAsync(team);
             }
 
-            await ProcessSale(soldPlayer, team, isSold);
+            return await ProcessSale(soldPlayer, team, isSold);
         }
 
 
-        public async Task ProcessSaleByTeamName(int playerId, string teamName, double salePrice, bool isSold)
+        public async Task<Result<SoldData>> ProcessSaleByTeamName(int playerId, string teamName, double salePrice, bool isSold)
         {
 
             var playerTask = _playerRepository.GetPlayerAsync(playerId);
@@ -74,7 +74,7 @@ namespace AuctionLeague.Service.PlayerSale
                 await _auctionTeamsRepository.AddAuctionTeamAsync(team);
             }
 
-            await ProcessSale(soldPlayer, team, isSold);
+            return await ProcessSale(soldPlayer, team, isSold);
         }
 
         public async Task ResetSold()
@@ -85,33 +85,32 @@ namespace AuctionLeague.Service.PlayerSale
             await Task.WhenAll(resetSold, removeFromTeams);
         }
 
-        private async Task ProcessSale(SoldPlayer soldPlayer, AuctionTeam team, bool isSold)
+        private async Task<Result<SoldData>> ProcessSale(SoldPlayer soldPlayer, AuctionTeam team, bool isSold)
         {
             if (isSold)
             {
                 var saleValidationResult = PlayerSaleResultValidator.ValidateSale(team, soldPlayer);
 
-                if (!saleValidationResult.IsValid)
+                if (saleValidationResult.IsFailed)
                 {
-                    throw new PlayerSaleException(saleValidationResult.Error);
+                    return Result.Fail(saleValidationResult.Errors);
                 }
 
                 await _auctionTeamsRepository.AddPlayerToAuctionTeamAsync(team.TeamName, soldPlayer);
             }
 
-            await SetAsSold(soldPlayer, team); // Always set as sold so can't be resold
-        }
-
-        private async Task SetAsSold(SoldPlayer soldPlayer, AuctionTeam team)
-        {
-            await _soldDataRepository.AddSoldDataAsync(new SoldData
+            var saleData = new SoldData
             {
                 PlayerId = soldPlayer.PlayerId,
                 FirstName = soldPlayer.FirstName,
                 LastName = soldPlayer.LastName,
                 SalePrice = soldPlayer.SalePrice,
                 SoldTo = team.TeamName
-            });
+            };
+
+            await _soldDataRepository.AddSoldDataAsync(saleData); // Always set as sold so can't be resold
+
+            return saleData;
         }
 
         private async Task<AuctionTeam> GetAuctionTeamByBidder(string bidder)

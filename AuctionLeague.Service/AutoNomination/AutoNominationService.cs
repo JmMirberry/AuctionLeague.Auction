@@ -3,7 +3,7 @@ using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.Service.Interfaces;
 using MongoDB.Driver.Linq;
 
-namespace AuctionLeague.Service;
+namespace AuctionLeague.Service.AutoNomination;
 
 public class AutoNominationService : IAutoNominationService
 {

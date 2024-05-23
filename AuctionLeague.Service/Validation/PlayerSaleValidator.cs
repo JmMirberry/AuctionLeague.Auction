@@ -1,14 +1,15 @@
 using AuctionLeague.Data;
+using FluentResults;
 
 namespace AuctionLeague.Service.PlayerSale.Validation
 {
     public static class PlayerSaleResultValidator
     {
-        public static PlayerSaleValidationResult ValidateSale(AuctionTeam team, SoldPlayer soldPlayer)
+        public static Result ValidateSale(AuctionTeam team, SoldPlayer soldPlayer)
         {
             var playersRemaining = 11 - team.Players.Count();
 
-            if (playersRemaining <= 0) return PlayerSaleValidationResult.Fail("Team is already complete");
+            if (playersRemaining <= 0) return Result.Fail("Team is already complete");
 
             var playerPosition = soldPlayer.Position;
             var positionConstraints = PositionSettings.GetPositionConstraints();
@@ -22,7 +23,7 @@ namespace AuctionLeague.Service.PlayerSale.Validation
                 {
                     if (playersPurchasedInPosition == position.MaxPlayers)
                     {
-                        return PlayerSaleValidationResult.Fail($"{team.TeamName} already has {position.MaxPlayers} {playerPosition}s");
+                        return Result.Fail($"{team.TeamName} already has {position.MaxPlayers} {playerPosition}s");
                     }
                     break;
                 }
@@ -32,10 +33,10 @@ namespace AuctionLeague.Service.PlayerSale.Validation
 
             if (playersRequiredForMinimums > playersRemaining - 1)
             {
-                return PlayerSaleValidationResult.Fail($"{team.TeamName} cannot purchase another {playerPosition}");
+                return Result.Fail($"{team.TeamName} cannot purchase another {playerPosition}");
             }
 
-            return PlayerSaleValidationResult.Pass();
+            return Result.Ok();
         }
     }
 }
