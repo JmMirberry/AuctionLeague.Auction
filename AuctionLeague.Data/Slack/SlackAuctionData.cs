@@ -1,4 +1,6 @@
-﻿namespace AuctionLeague.Data.Slack
+﻿using AuctionLeague.Data.Auction;
+
+namespace AuctionLeague.Data.Slack
 {
     public class SlackAuctionData : AuctionData
     {

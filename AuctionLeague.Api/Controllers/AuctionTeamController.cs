@@ -1,4 +1,4 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.Service.PlayerSale;
 using Microsoft.AspNetCore.Mvc;

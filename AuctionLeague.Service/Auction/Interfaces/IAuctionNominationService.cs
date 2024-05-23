@@ -1,9 +1,10 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.Auction;
+using AuctionLeague.Data.FplPlayer;
 using FluentResults;
 namespace AuctionLeague.Service.Auction.Interfaces;
 
 public interface IAuctionNominationService 
 { 
-    Task<Result<Player>> NominateByName(string lastNameSearch); 
-    Task<Result<Player>> NominateById(int playerId); 
+    Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch); 
+    Task<Result<AuctionPlayer>> NominateById(int playerId); 
 }

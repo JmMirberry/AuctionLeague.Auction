@@ -1,5 +1,6 @@
-﻿
-namespace AuctionLeague.Data;
+﻿using AuctionLeague.Data.FplPlayer;
+
+namespace AuctionLeague.Data.Auction;
 
 public class SoldPlayer : Player
 {
@@ -12,7 +13,6 @@ public class SoldPlayer : Player
         Position = player.Position;
         Value = player.Value;
         TotalPointsPreviousYear = player.TotalPointsPreviousYear;
-        IsInFpl = player.IsInFpl;
         SalePrice = salePrice;
     }
 

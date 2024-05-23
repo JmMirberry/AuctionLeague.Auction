@@ -3,6 +3,8 @@ using AuctionLeague.MongoDb;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.MongoDb.Repositories;
 using AuctionLeague.Service;
+using AuctionLeague.Service.AutoNomination;
+using AuctionLeague.Service.Interfaces;
 using AuctionLeague.Service.PlayerSale;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
@@ -66,10 +68,10 @@ public class Program
 
     private static void AddRepositories(IServiceCollection services)
     {
-        services.AddSingleton<IPlayerRepository, PlayerRepository>();
+        services.AddSingleton<IAuctionPlayerRepository, AuctionPlayerRepository>();
+        services.AddSingleton<IManualPlayerRepository, ManualPlayerRepository>();
+        services.AddSingleton<IFplPlayerRepository, FplPlayerRepository>();
         services.AddSingleton<IAuctionTeamRepository, AuctionTeamRepository>();
-        services.AddSingleton<ISoldDataRepository, SoldDataRepository>();
-        services.AddSingleton<IAutoNominationRepository, AutoNominationRepository>();
     }
 
     private static void ConfigureSettings(WebApplicationBuilder builder)

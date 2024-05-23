@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Fpl.Models;
 using AuctionLeague.MongoDb.Abstractions;
 
@@ -7,9 +7,9 @@ namespace AuctionLeague.Fpl;
 public class FplService : IFplService
 {
     private readonly IFplClient _client;
-    private readonly IPlayerRepository _repository;
+    private readonly IFplPlayerRepository _repository;
 
-    public FplService(IFplClient client, IPlayerRepository repository)
+    public FplService(IFplClient client, IFplPlayerRepository repository)
     {
         _client = client;
         _repository = repository;
@@ -19,7 +19,7 @@ public class FplService : IFplService
     {
         var data = await _client.GetAllFplData();
         var mappedPlayers = MapPlayers(data);
-        await _repository.RemoveAllFplPlayersAsync();
+        await _repository.RemoveAllPlayersAsync();
         await _repository.AddPlayersAsync(mappedPlayers);
         return mappedPlayers;
     }
@@ -35,8 +35,7 @@ public class FplService : IFplService
                  Team = response.teams.First(t => t.id == p.team).short_name,
                  Position = Enum.Parse<Position>(response.element_types.First(e => e.id == p.element_type).singular_name_short),
                  Value = p.now_cost / 10.0,
-                 TotalPointsPreviousYear = p.total_points,
-                 IsInFpl = true
+                 TotalPointsPreviousYear = p.total_points
              });
     }
 }

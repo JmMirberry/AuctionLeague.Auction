@@ -1,12 +1,14 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.Auction;
+using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Data.Slack;
 using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.DataStore;
 using FluentResults;
 
-namespace AuctionLeague.Service.Auction {
-    
-public class SlackAuctionManager : ISlackAuctionManager 
+namespace AuctionLeague.Service.Auction
+{
+
+    public class SlackAuctionManager : ISlackAuctionManager 
     {      
         private readonly IAuctionTimer _timer; 
         private readonly DataStore<SlackAuctionData> _dataStore; 
@@ -17,7 +19,7 @@ public class SlackAuctionManager : ISlackAuctionManager
             _dataStore = dataStore;
         }
         
-        public Result<Player> StartAuction() 
+        public Result<AuctionPlayer> StartAuction() 
         {
             var player = _dataStore.Data?.Player; 
             if (player == null)
@@ -28,7 +30,7 @@ public class SlackAuctionManager : ISlackAuctionManager
             return Result.Ok(player);
         }
         
-        public void NominatePlayer(Player player, string bidder)
+        public void NominatePlayer(AuctionPlayer player, string bidder)
         {   
             _dataStore.Data = new SlackAuctionData
             {           
@@ -38,7 +40,7 @@ public class SlackAuctionManager : ISlackAuctionManager
             };
         }
         
-        public Player NominatedPlayer()
+        public AuctionPlayer NominatedPlayer()
         {     
             return _dataStore.Data?.Player;
         }

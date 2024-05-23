@@ -1,4 +1,4 @@
-namespace AuctionLeague.Data;
+namespace AuctionLeague.Data.Auction;
 
 public class AuctionTeam
 {

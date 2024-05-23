@@ -1,4 +1,4 @@
-﻿namespace AuctionLeague.Data;
+﻿namespace AuctionLeague.Data.FplPlayer;
 
 public class Player
 {
@@ -9,5 +9,4 @@ public class Player
     public Position Position { get; set; }
     public double Value { get; set; }
     public int TotalPointsPreviousYear { get; set; }
-    public bool IsInFpl { get; set; }
 }

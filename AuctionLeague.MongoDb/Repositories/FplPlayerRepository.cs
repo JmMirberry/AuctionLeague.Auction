@@ -1,18 +1,18 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.MongoDb.Abstractions;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace AuctionLeague.MongoDb.Repositories
 {
-    public class PlayerRepository : BaseRepository, IPlayerRepository
+    public class FplPlayerRepository : BaseRepository, IFplPlayerRepository
     {
         private readonly IMongoCollection<PlayerEntity> _playersCollection;
 
-        public PlayerRepository(
+        public FplPlayerRepository(
             IOptions<MongoDbSettings> settings) : base(settings) 
         {
-            _playersCollection = mongoDatabase.GetCollection<PlayerEntity>("Players");
+            _playersCollection = mongoDatabase.GetCollection<PlayerEntity>("FplPlayers");
         }
 
         public async Task<IEnumerable<Player>> GetPlayersAsync()
@@ -35,20 +35,11 @@ namespace AuctionLeague.MongoDb.Repositories
             await _playersCollection.Find(x => x.LastName.Contains(lastNameSearch)).ToListAsync();
             return entities?.Select(e => e.ToPlayer());
         }
-
-        public async Task AddPlayerAsync(Player newPlayer) =>
-            await _playersCollection.InsertOneAsync(newPlayer.ToEntity());
         
         public async Task AddPlayersAsync(IEnumerable<Player> newPlayer) =>
             await _playersCollection.InsertManyAsync(newPlayer.Select(p=>p.ToEntity()));
 
-        public async Task UpdatePlayerAsync(int playerId, Player updatedPlayer) =>
-            await _playersCollection.ReplaceOneAsync(x => x.PlayerId == playerId, updatedPlayer.ToEntity());
-
-        public async Task RemovePlayerAsync(int playerId) =>
-            await _playersCollection.DeleteOneAsync(x => x.PlayerId == playerId);
-
-        public async Task RemoveAllFplPlayersAsync() =>
-            await _playersCollection.DeleteManyAsync(p => p.IsInFpl);
+        public async Task RemoveAllPlayersAsync() =>
+            await _playersCollection.DeleteManyAsync(_ => true);
     }
 }

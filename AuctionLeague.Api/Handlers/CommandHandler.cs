@@ -18,7 +18,8 @@ namespace SlackAPI.Handlers
                 Message = new Message
                 {
                     Text = command.Text
-                }
+                },
+                ResponseType = ResponseType.InChannel
             };
         }
     }

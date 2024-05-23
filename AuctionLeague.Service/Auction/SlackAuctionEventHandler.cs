@@ -1,4 +1,5 @@
 ﻿using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.Data.Slack;
 using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.DataStore;

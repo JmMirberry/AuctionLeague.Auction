@@ -13,7 +13,6 @@ public class SoldPlayerEntity : PlayerEntity
         Position = player.Position;
         Value = player.Value;
         TotalPointsPreviousYear = player.TotalPointsPreviousYear;
-        IsInFpl = player.IsInFpl;
         SalePrice = salePrice;
     }
 

@@ -1,4 +1,5 @@
 using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.Service.Validation;
 using FluentResults;
@@ -8,13 +9,11 @@ namespace AuctionLeague.Service.PlayerSale
     public class PlayerSaleService : IPlayerSaleService
     {
         private readonly IAuctionTeamRepository _auctionTeamsRepository;
-        private readonly ISoldDataRepository _soldDataRepository;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IAuctionPlayerRepository _playerRepository;
 
-        public PlayerSaleService(IAuctionTeamRepository auctionTeamsRepository, ISoldDataRepository soldDataRepository, IPlayerRepository playerRepository)
+        public PlayerSaleService(IAuctionTeamRepository auctionTeamsRepository, IAuctionPlayerRepository playerRepository)
         {
             _auctionTeamsRepository = auctionTeamsRepository;
-            _soldDataRepository = soldDataRepository;
             _playerRepository = playerRepository;
         }
 
@@ -77,14 +76,6 @@ namespace AuctionLeague.Service.PlayerSale
             return await ProcessSale(soldPlayer, team, isSold);
         }
 
-        public async Task ResetSold()
-        {
-            var resetSold = _soldDataRepository.RemoveAllSoldDataAsync();
-            var removeFromTeams = _auctionTeamsRepository.RemovePlayersFromAllAuctionTeams();
-
-            await Task.WhenAll(resetSold, removeFromTeams);
-        }
-
         private async Task<Result<SoldData>> ProcessSale(SoldPlayer soldPlayer, AuctionTeam team, bool isSold)
         {
             if (isSold)
@@ -108,7 +99,7 @@ namespace AuctionLeague.Service.PlayerSale
                 SoldTo = team.TeamName
             };
 
-            await _soldDataRepository.AddSoldDataAsync(saleData); // Always set as sold so can't be resold
+            await _playerRepository.SetPlayerAsSold(soldPlayer.PlayerId); // Always set as sold so can't be resold
 
             return saleData;
         }

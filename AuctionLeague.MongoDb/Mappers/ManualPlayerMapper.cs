@@ -1,34 +1,28 @@
 using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.MongoDb;
 
-public static class PlayerMapper
+public static class ManualPlayerMapper
 {
-    public static PlayerEntity ToEntity(this Player player)
+    public static ManualPlayerEntity ToEntity(this ManualPlayer player)
     {
-        return new PlayerEntity
+        return new ManualPlayerEntity
         {
             _id = player.PlayerId.ToString(),
             PlayerId = player.PlayerId,
             FirstName = player.FirstName,
             LastName = player.LastName,
-            Team = player.Team,
             Position = player.Position,
-            Value = player.Value,
-            TotalPointsPreviousYear = player.TotalPointsPreviousYear,
         };
     }
 
-    public static Player ToPlayer(this PlayerEntity player)
+    public static ManualPlayer ToPlayer(this ManualPlayerEntity player)
     {
-        return new Player
+        return new ManualPlayer
         {
             PlayerId = player.PlayerId,
             FirstName = player.FirstName,
             LastName = player.LastName,
-            Team = player.Team,
             Position = player.Position,
-            Value = player.Value,
-            TotalPointsPreviousYear = player.TotalPointsPreviousYear,
         };
     }
 }

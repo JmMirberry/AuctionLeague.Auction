@@ -1,4 +1,6 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.Auction;
+using AuctionLeague.Data.FplPlayer;
+using AuctionLeague.Data.Settings;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.Service.Interfaces;
 using MongoDB.Driver.Linq;
@@ -7,27 +9,26 @@ namespace AuctionLeague.Service.AutoNomination;
 
 public class AutoNominationService : IAutoNominationService
 {
-    private readonly IAutoNominationRepository _repository;
-    private readonly IPlayerRepository _playerRepository;
+    private readonly IAuctionPlayerRepository _playerRepository;
+    private readonly List<AutonominationSettings> _settings;
 
-    public AutoNominationService(IAutoNominationRepository repository, IPlayerRepository playerRepository)
+    public AutoNominationService( IAuctionPlayerRepository playerRepository)
     {
-        _repository = repository;
         _playerRepository = playerRepository;
     }
 
-    public async Task SetAutoNomination(List<AutonominationSettings> settings)
+    public async Task SetAutoNominations(List<AutonominationSettings> settings)
     {
         var players = await _playerRepository.GetPlayersAsync();
 
         await SetAutoNomination(settings, players);
     }
 
-    private async Task SetAutoNomination(List<AutonominationSettings> settings, IEnumerable<Player> players)
+    private async Task SetAutoNomination(List<AutonominationSettings> settings, IEnumerable<AuctionPlayer> players)
     {
         var playersByPosition = players.GroupBy(x => x.Position);
 
-        var autoNominationPlayers = new List<Player>();
+        var autoNominationPlayers = new List<AuctionPlayer>();
 
         foreach (var grouping in playersByPosition)
         {
@@ -35,16 +36,18 @@ public class AutoNominationService : IAutoNominationService
             autoNominationPlayers.AddRange(grouping.Where(g => g.Value >= minValue));
         }
 
-        await _repository.RemoveAutonominationDataAsync();
-        await _repository.SaveAutoNominationDataAsync(autoNominationPlayers);
+        await _playerRepository.ResetAutoNomination();
+        await _playerRepository.SetAutoNominations(autoNominationPlayers);
     }
 
     public async Task<Player> GetAutoNomination()
     {
-        var players = (await _repository.GetAutoNominationsAsync()).ToList();
+        var players = (await _playerRepository.GetAutoNominations()).ToList();
         var random = new Random();
         var randomIndex = random.Next(0, players.Count());
 
-        return players[randomIndex];
+        var player = players[randomIndex];
+
+        return player;
     }
 }

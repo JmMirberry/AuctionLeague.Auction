@@ -1,4 +1,5 @@
 using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,19 +7,19 @@ namespace AuctionLeague.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PlayersController : ControllerBase
+    public class AuctionPlayerController : ControllerBase
     {
-        private readonly IPlayerRepository _playersRepository;
+        private readonly IAuctionPlayerRepository _playersRepository;
 
-        public PlayersController(IPlayerRepository playersRepository) =>
+        public AuctionPlayerController(IAuctionPlayerRepository playersRepository) =>
             _playersRepository = playersRepository;
 
         [HttpGet]
-        public async Task<IEnumerable<Player>> Get() =>
+        public async Task<IEnumerable<AuctionPlayer>> Get() =>
             await _playersRepository.GetPlayersAsync();
 
         [HttpGet("{playerId:length(24)}")]
-        public async Task<ActionResult<Player>> Get(int playerId)
+        public async Task<ActionResult<AuctionPlayer>> Get(int playerId)
         {
             var player = await _playersRepository.GetPlayerAsync(playerId);
 
@@ -31,7 +32,7 @@ namespace AuctionLeague.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Player newPlayer)
+        public async Task<IActionResult> Post(AuctionPlayer newPlayer)
         {
             await _playersRepository.AddPlayerAsync(newPlayer);
 
@@ -39,7 +40,7 @@ namespace AuctionLeague.Controllers
         }
 
         [HttpPut("{playerId:length(24)}")]
-        public async Task<IActionResult> Update(int playerId, Player updatedPlayer)
+        public async Task<IActionResult> Update(int playerId, AuctionPlayer updatedPlayer)
         {
             var player = await _playersRepository.GetPlayerAsync(playerId);
 
@@ -70,10 +71,10 @@ namespace AuctionLeague.Controllers
         }
         
         [HttpDelete()]
-        [Route("Delete-Fpl")]
-        public async Task<IActionResult> DeleteFplPLayers()
+        [Route("Delete-all")]
+        public async Task<IActionResult> DeleteAllPlayers()
         {
-            await _playersRepository.RemoveAllFplPlayersAsync();
+            await _playersRepository.RemoveAllPlayersAsync();
 
             return NoContent();
         }

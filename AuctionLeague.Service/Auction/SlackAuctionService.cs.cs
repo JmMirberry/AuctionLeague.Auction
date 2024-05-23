@@ -1,4 +1,5 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.Auction;
+using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Service.Auction.Interfaces;
 using FluentResults;
 using SlackNet;
@@ -52,7 +53,7 @@ namespace AuctionLeague.Service.Auction
             await NominatePlayer(nominationSearchResult.Value, bidder, channel);
         } 
         
-        private async Task NominatePlayer(Result<Player> playerSearchResult, string bidder, string channel)
+        private async Task NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder, string channel)
         { 
             if (playerSearchResult.IsFailed)
             {
