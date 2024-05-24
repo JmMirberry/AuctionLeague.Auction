@@ -1,4 +1,5 @@
 using AuctionLeague.Fpl;
+using AuctionLeague.Handlers.SlackCommandHandlers;
 using AuctionLeague.MongoDb;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.MongoDb.Repositories;

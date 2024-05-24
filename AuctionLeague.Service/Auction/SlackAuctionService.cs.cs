@@ -1,39 +1,39 @@
 ﻿using AuctionLeague.Data.Auction;
 using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.Interfaces;
 using FluentResults;
 using SlackNet;
 
 namespace AuctionLeague.Service.Auction
 {
-    public class SlackAuctionService
+    public class SlackAuctionService : ISlackAuctionService
     {
         private readonly ISlackAuctionManager _auctionManager;
         private readonly IAuctionNominationService _nominationService;
-        private readonly ISlackApiClient _slackClient;
+        private readonly IAutoNominationService _autoNominationSevice;
 
-        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService, ISlackApiClient slackClient) 
+        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService)
         {
             _auctionManager = auctionManager;
             _nominationService = nominationService;
-            _slackClient = slackClient;
         }
-        
-        public async Task StartAuction(string channel)
+
+        public Result<string> StartAuction()
         {
             var result = _auctionManager.StartAuction();
 
             if (result.IsFailed)
             {
-                await SendMessage(result.Errors.ToString(), channel);
+                return Result.Fail(result.Errors[0].Message.ToString());
             }
 
-            await SendMessage($"Auction started for {result.Value.FirstName} {result.Value.FirstName}", channel);
+            return Result.Ok($"Auction started for {result.Value.FirstName} {result.Value.FirstName}");
         }
-        
-        public async Task EndAuction(string channel)
+
+        public void EndAuction()
         {
-            await SendMessage("Auction ended", channel);
+            _auctionManager.EndAuction();
         }
 
         public void SubmitBid(int bid, string bidder)
@@ -41,55 +41,46 @@ namespace AuctionLeague.Service.Auction
             _auctionManager.BidMade(bid, bidder);
         }
 
-        public async Task NominateByName(string lastNameSearch, string bidder, string channel)
+        public async Task<Result<string>> NominateByName(string lastNameSearch, string bidder)
         {
             var nominationSearchResult = await _nominationService.NominateByName(lastNameSearch);
-            await NominatePlayer(nominationSearchResult.Value, bidder, channel);
+            return NominatePlayer(nominationSearchResult.Value, bidder);
         }
-        
-        public async Task NominateById(int playerId, string bidder, string channel)
+
+        public async Task<Result<string>> NominateById(int playerId, string bidder)
         {
             var nominationSearchResult = await _nominationService.NominateById(playerId);
-            await NominatePlayer(nominationSearchResult.Value, bidder, channel);
-        } 
-        
-        private async Task NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder, string channel)
-        { 
+            return NominatePlayer(nominationSearchResult.Value, bidder);
+        }
+
+        private Result<string> NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder)
+        {
             if (playerSearchResult.IsFailed)
             {
-                await SendMessage(playerSearchResult.Errors.ToString(), channel); 
+                return Result.Fail(playerSearchResult.Errors.ToString());
             }
 
             _auctionManager.NominatePlayer(playerSearchResult.Value, bidder);
 
-            await SendMessage($"Auction started for {playerSearchResult.Value.FirstName} {playerSearchResult.Value.FirstName}", channel);
+            return Result.Ok($"Auction started for {playerSearchResult.Value.FirstName} {playerSearchResult.Value.FirstName}");
         }
-        
-        public async Task CheckNominatedPlayer(string channel)
+
+        public Result<AuctionPlayer> CheckNominatedPlayer()
         {
             var player = _auctionManager.NominatedPlayer();
 
             if (player == null)
             {
-                await SendMessage("No player nominated", channel);
-            } 
-        }
-        
-        public async Task CheckCurrentBid(string channel)
-        { 
-            var bid = _auctionManager.CurrentBid();
-            await SendMessage($"Current bid is {bid.Bid} by {bid.Bidder}", channel);
-        }
-        
-        private async Task SendMessage(string message, string channel)
-        {
-            var slackMessage = new SlackNet.WebApi.Message()
-            {
-                Text = message,
-                Channel = channel
-            };
+                return Result.Fail("No player nominated");
+            }
 
-            await _slackClient.Chat.PostMessage(slackMessage, null);
+            return Result.Ok<AuctionPlayer>(player);
         }
-    } 
+
+        public Result<string> CheckCurrentBid()
+        {
+            var bid = _auctionManager.CurrentBid();
+            return Result.Ok($"Current bid is {bid.Bid} by {bid.Bidder}");
+        }
+    }
 }

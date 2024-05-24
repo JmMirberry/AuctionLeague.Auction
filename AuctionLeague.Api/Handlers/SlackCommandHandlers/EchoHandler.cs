@@ -3,24 +3,23 @@ using SlackNet.Events;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
 
-namespace SlackAPI.Handlers
+namespace AuctionLeague.Handlers.SlackCommandHandlers
 {
     public class EchoDemo : ISlashCommandHandler
     {
         public const string SlashCommand = "/echo";
 
-        public async Task<SlashCommandResponse> Handle(SlashCommand command)
+        public Task<SlashCommandResponse> Handle(SlashCommand command)
         {
             Console.WriteLine($"{command.UserName} used the {SlashCommand} slash command in the {command.ChannelName} channel");
 
-            return new SlashCommandResponse
+            return Task.FromResult(new SlashCommandResponse
             {
                 Message = new Message
                 {
                     Text = command.Text
-                },
-                ResponseType = ResponseType.InChannel
-            };
+                }
+            });
         }
     }
 }

@@ -5,7 +5,7 @@ using SlackNet;
 using SlackNet.AspNetCore;
 using SlackNet.Interaction;
 
-namespace SlackAPI.Controllers
+namespace AuctionLeague.Controllers
 {
     [ApiController]
     public class SlackController : ControllerBase
@@ -42,6 +42,7 @@ namespace SlackAPI.Controllers
         [Route("[Controller]/Command")]
         public async Task<IActionResult> Command()
         {
+            //Shouldn't need to do this, but can't get it to work
             var command = new SlashCommand
             {
                 Command = HttpContext.Request.Form["command"],
@@ -49,8 +50,7 @@ namespace SlackAPI.Controllers
                 ChannelName = HttpContext.Request.Form["channel_name"],
                 Text = HttpContext.Request.Form["text"]
             };
-            //await _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = command.Text.ToString(), Channel = command.ChannelName }, null);
-            //return Ok();
+            
             var result = await _commandHandler.Handle(command);
             return Ok(result);
         }
