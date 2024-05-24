@@ -1,4 +1,3 @@
-using AuctionLeague.Data;
 using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using Microsoft.Extensions.Options;
@@ -54,22 +53,38 @@ namespace AuctionLeague.MongoDb.Repositories
 
         public async Task SetPlayerAsSold(int playerId)
         {
-            throw new NotImplementedException();
+            var filter = Builders<AuctionPlayerEntity>.Filter.Eq(p => p.PlayerId, playerId);
+            var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsSold, true);
+            await _playersCollection.UpdateOneAsync(filter, update);
         }
 
         public async Task SetAutoNominations(IEnumerable<AuctionPlayer> autoNominationPlayers)
         {
-            throw new NotImplementedException();
+            foreach (var player in autoNominationPlayers)
+            {
+                await SetAutoNomination(player.PlayerId);
+            }
+        }
+
+        public async Task SetAutoNomination(int playerId)
+        {
+            var filter = Builders<AuctionPlayerEntity>.Filter.Eq(p => p.PlayerId, playerId);
+            var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsAutoNomination, true);
+            await _playersCollection.UpdateOneAsync(filter, update);
         }
 
         public async Task ResetSold()
         {
-            throw new NotImplementedException();
+            var filter = Builders<AuctionPlayerEntity>.Filter.Empty;
+            var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsSold, false);
+            await _playersCollection.UpdateOneAsync(filter, update);
         }
 
         public async Task ResetAutoNomination()
         {
-            throw new NotImplementedException();
+            var filter = Builders<AuctionPlayerEntity>.Filter.Empty;
+            var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsAutoNomination, false);
+            await _playersCollection.UpdateOneAsync(filter, update);
         }
 
         public Task<IEnumerable<AuctionPlayer>> GetAutoNominations()
