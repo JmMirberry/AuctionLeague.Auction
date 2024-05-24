@@ -1,6 +1,7 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
 using SlackNet;
 using SlackNet.Events;
+
 using SlackNet.WebApi;
 
 namespace SlackAPI.Handlers
@@ -20,15 +21,34 @@ namespace SlackAPI.Handlers
         {
             if (_auctionManager.AuctionLive()) return;
 
-
-            if (slackEvent.Text.Contains("ping"))
+            if (!int.TryParse(slackEvent.Text, out var bid))
             {
                 await _slack.Chat.PostMessage(new Message
                 {
-                    Text = "pong",
+                    Text = "Bids must be integers",
                     Channel = slackEvent.Channel
                 }).ConfigureAwait(false);
             }
+
+            if (bid <= 1)
+            {
+                await _slack.Chat.PostMessage(new Message
+                {
+                    Text = "Bids must be > 1",
+                    Channel = slackEvent.Channel
+                }).ConfigureAwait(false);
+            }
+
+            if (bid >= 91)
+            {
+                await _slack.Chat.PostMessage(new Message
+                {
+                    Text = "Bids must be < 91",
+                    Channel = slackEvent.Channel
+                }).ConfigureAwait(false);
+            }
+
+            _auctionManager.BidMade(bid, slackEvent.User);
         }
     }
 }
