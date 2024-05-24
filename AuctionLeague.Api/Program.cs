@@ -43,7 +43,7 @@ public class Program
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
-            .RegisterEventHandler<MessageEvent, PingHandler>()
+            .RegisterEventHandler<MessageEvent, SlackMessageHandler>()
             .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand));
 
         builder.Services.AddSingleton<ISlashCommandHandler, EchoDemo>();

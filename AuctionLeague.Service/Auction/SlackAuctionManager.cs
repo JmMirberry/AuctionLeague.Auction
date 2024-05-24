@@ -18,6 +18,11 @@ namespace AuctionLeague.Service.Auction
             _timer = timer;
             _dataStore = dataStore;
         }
+
+        public bool AuctionLive()
+        {
+            return _timer.TimerRunning();
+        }
         
         public Result<AuctionPlayer> StartAuction() 
         {
