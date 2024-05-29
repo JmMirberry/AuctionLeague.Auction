@@ -17,7 +17,7 @@ namespace AuctionLeague.Controllers
         public async Task<IEnumerable<ManualPlayer>> Get() =>
             await _playerRepository.GetPlayersAsync();
 
-        [HttpGet("{playerId:length(24)}")]
+        [HttpGet("{playerId}")]
         public async Task<ActionResult<ManualPlayer>> Get(int playerId)
         {
             var player = await _playerRepository.GetPlayerAsync(playerId);
@@ -29,7 +29,7 @@ namespace AuctionLeague.Controllers
 
             return Ok(player);
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Post(ManualPlayer newPlayer)
         {
@@ -38,7 +38,7 @@ namespace AuctionLeague.Controllers
             return CreatedAtAction(nameof(Get), newPlayer);
         }
 
-        [HttpPut("{playerId:length(24)}")]
+        [HttpPut("{playerId}")]
         public async Task<IActionResult> Update(int playerId, ManualPlayer updatedPlayer)
         {
             var player = await _playerRepository.GetPlayerAsync(playerId);
@@ -54,7 +54,7 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{playerId:length(24)}")]
+        [HttpDelete("{playerId}")]
         public async Task<IActionResult> Delete(int playerId)
         {
             var player = await _playerRepository.GetPlayerAsync(playerId);
@@ -69,7 +69,7 @@ namespace AuctionLeague.Controllers
             return NoContent();
         }
         
-        [HttpDelete()]
+        [HttpDelete]
         [Route("Delete-all")]
         public async Task<IActionResult> DeletePlayers()
         {
