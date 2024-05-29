@@ -24,10 +24,10 @@ namespace AuctionLeague.Controllers
 
             if (player is null)
             {
-                return NotFound();
+                return NotFound("Player not found");
             }
 
-            return player;
+            return Ok(player);
         }
 
         [HttpPost]
@@ -61,7 +61,7 @@ namespace AuctionLeague.Controllers
 
             if (player is null)
             {
-                return NotFound();
+                return NotFound("Player not found");
             }
 
             await _playerRepository.RemovePlayerAsync(playerId);

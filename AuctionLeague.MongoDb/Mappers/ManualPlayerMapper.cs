@@ -10,8 +10,7 @@ public static class ManualPlayerMapper
             _id = player.PlayerId.ToString(),
             PlayerId = player.PlayerId,
             FirstName = player.FirstName,
-            LastName = player.LastName,
-            Position = player.Position,
+            LastName = player.LastName
         };
     }
 
@@ -22,7 +21,6 @@ public static class ManualPlayerMapper
             PlayerId = player.PlayerId,
             FirstName = player.FirstName,
             LastName = player.LastName,
-            Position = player.Position,
         };
     }
 }

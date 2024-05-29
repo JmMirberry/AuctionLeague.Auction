@@ -12,11 +12,11 @@ namespace AuctionLeague.Service.Auction
 {
     public class SlackAuctionEventHandler : ITimerEventHandler
     {        
-        private readonly DataStore<SlackAuctionData> _dataStore;
+        private readonly IDataStore<SlackAuctionData> _dataStore;
         private readonly IPlayerSaleService _playerSaleService;
         private readonly ISlackApiClient _slackClient;
 
-        public SlackAuctionEventHandler(DataStore<SlackAuctionData> dataStore, IPlayerSaleService playerSaleService, ISlackApiClient slackClient)
+        public SlackAuctionEventHandler(IDataStore<SlackAuctionData> dataStore, IPlayerSaleService playerSaleService, ISlackApiClient slackClient)
         {
             _dataStore = dataStore;
             _playerSaleService = playerSaleService;

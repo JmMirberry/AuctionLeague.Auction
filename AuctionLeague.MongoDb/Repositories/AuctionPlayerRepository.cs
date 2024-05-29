@@ -12,7 +12,7 @@ namespace AuctionLeague.MongoDb.Repositories
         public AuctionPlayerRepository(
             IOptions<MongoDbSettings> settings) : base(settings) 
         {
-            _playersCollection = mongoDatabase.GetCollection<AuctionPlayerEntity>("Players");
+            _playersCollection = mongoDatabase.GetCollection<AuctionPlayerEntity>("AuctionPlayers");
         }
 
         public async Task<IEnumerable<AuctionPlayer>> GetPlayersAsync()

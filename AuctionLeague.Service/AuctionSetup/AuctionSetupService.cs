@@ -71,8 +71,8 @@ namespace AuctionLeague.Service
                 PlayerId = player.PlayerId,
                 FirstName = player.FirstName,
                 LastName = player.LastName,
-                Team = player.Team,
-                Position = player.Position,
+                Team = "Unknown",
+                Position = Position.Unknown,
                 IsFplPlayer = true,
                 IsAutonomination = false,
                 IsSold = false

@@ -1,6 +1,6 @@
 ﻿namespace AuctionLeague.Service.DataStore
 {
-    public class DataStore<T>
+    public class DataStore<T> : IDataStore<T>
     {
         private readonly object _lock = new object();
         private T _data;

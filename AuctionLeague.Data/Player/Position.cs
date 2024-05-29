@@ -2,6 +2,7 @@
 
 public enum Position
 {
+    Unknown,
     GKP,
     DEF,
     MID,

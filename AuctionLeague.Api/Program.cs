@@ -1,3 +1,4 @@
+using AuctionLeague.Data.Slack;
 using AuctionLeague.Fpl;
 using AuctionLeague.Handlers.SlackCommandHandlers;
 using AuctionLeague.MongoDb;
@@ -7,6 +8,7 @@ using AuctionLeague.Service;
 using AuctionLeague.Service.Auction;
 using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.AutoNomination;
+using AuctionLeague.Service.DataStore;
 using AuctionLeague.Service.Interfaces;
 using AuctionLeague.Service.PlayerSale;
 using SlackAPI.Handlers;
@@ -76,6 +78,7 @@ public class Program
     private static void AddAuctionServices(WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IAuctionNominationService, AuctionNominationService>();
+        builder.Services.AddSingleton<IDataStore<SlackAuctionData>, DataStore<SlackAuctionData>>();
         builder.Services.AddSingleton<IAuctionTimer, AuctionTimer>();
         builder.Services.AddSingleton<ISlackAuctionManager, SlackAuctionManager>();
         builder.Services.AddSingleton<ISlackAuctionService, SlackAuctionService>();

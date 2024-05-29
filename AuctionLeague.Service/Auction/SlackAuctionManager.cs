@@ -11,9 +11,9 @@ namespace AuctionLeague.Service.Auction
     public class SlackAuctionManager : ISlackAuctionManager 
     {      
         private readonly IAuctionTimer _timer; 
-        private readonly DataStore<SlackAuctionData> _dataStore; 
+        private readonly IDataStore<SlackAuctionData> _dataStore; 
 
-        public SlackAuctionManager(IAuctionTimer timer, DataStore<SlackAuctionData> dataStore)
+        public SlackAuctionManager(IAuctionTimer timer, IDataStore<SlackAuctionData> dataStore)
         { 
             _timer = timer;
             _dataStore = dataStore;
