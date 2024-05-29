@@ -1,4 +1,4 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.MongoDb;
 
 public static class PlayerMapper
@@ -15,7 +15,6 @@ public static class PlayerMapper
             Position = player.Position,
             Value = player.Value,
             TotalPointsPreviousYear = player.TotalPointsPreviousYear,
-            IsInFpl = player.IsInFpl
         };
     }
 
@@ -30,7 +29,6 @@ public static class PlayerMapper
             Position = player.Position,
             Value = player.Value,
             TotalPointsPreviousYear = player.TotalPointsPreviousYear,
-            IsInFpl = player.IsInFpl
         };
     }
 }

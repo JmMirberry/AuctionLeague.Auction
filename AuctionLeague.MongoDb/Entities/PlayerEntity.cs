@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.FplPlayer;
 
 namespace AuctionLeague.MongoDb;
 
@@ -12,5 +12,4 @@ public class PlayerEntity
     public Position Position { get; set; }
     public double Value { get; set; }
     public int TotalPointsPreviousYear { get; set; }
-    public bool IsInFpl { get; set; }
 }

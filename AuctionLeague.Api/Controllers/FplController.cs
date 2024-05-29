@@ -1,4 +1,4 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Fpl;
 using Microsoft.AspNetCore.Mvc;
 

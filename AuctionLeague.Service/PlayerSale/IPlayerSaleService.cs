@@ -1,11 +1,12 @@
 ﻿using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
+using FluentResults;
 
 namespace AuctionLeague.Service.PlayerSale;
 
 public interface IPlayerSaleService
 {
-    Task ProcessSaleByBidder(SoldPlayer soldPlayer, string bidder, bool isSold);
-    Task ProcessSaleByTeamName(SoldPlayer soldPlayer, string teamName, bool isSold);
-    Task ProcessSaleByTeamName(int playerId, string teamName, double salePrice, bool isSold);
-    Task ResetSold();
+    Task<Result<SoldData>> ProcessSaleByBidder(SoldPlayer soldPlayer, string bidder, bool isSold);
+    Task<Result<SoldData>> ProcessSaleByTeamName(SoldPlayer soldPlayer, string teamName, bool isSold);
+    Task<Result<SoldData>> ProcessSaleByTeamName(int playerId, string teamName, double salePrice, bool isSold);
 }

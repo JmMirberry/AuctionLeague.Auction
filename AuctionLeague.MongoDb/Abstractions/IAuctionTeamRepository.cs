@@ -1,4 +1,4 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 
 namespace AuctionLeague.MongoDb.Abstractions
 {

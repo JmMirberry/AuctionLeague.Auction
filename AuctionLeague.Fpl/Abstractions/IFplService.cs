@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Data;
+﻿using AuctionLeague.Data.FplPlayer;
 
 namespace AuctionLeague.Fpl;
 

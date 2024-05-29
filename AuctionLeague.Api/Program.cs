@@ -1,8 +1,15 @@
+using AuctionLeague.Data.Slack;
 using AuctionLeague.Fpl;
+using AuctionLeague.Handlers.SlackCommandHandlers;
 using AuctionLeague.MongoDb;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.MongoDb.Repositories;
 using AuctionLeague.Service;
+using AuctionLeague.Service.Auction;
+using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.AutoNomination;
+using AuctionLeague.Service.DataStore;
+using AuctionLeague.Service.Interfaces;
 using AuctionLeague.Service.PlayerSale;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
@@ -40,10 +47,12 @@ public class Program
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
-            .RegisterEventHandler<MessageEvent, PingHandler>()
-            .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand));
-
-        builder.Services.AddSingleton<ISlashCommandHandler, EchoDemo>();
+            .RegisterEventHandler<MessageEvent, SlackMessageHandler>()
+            .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand)
+            .RegisterSlashCommandHandler<BeginAuctionHandler>(BeginAuctionHandler.SlashCommand)
+            .RegisterSlashCommandHandler<KillAuctionHandler>(KillAuctionHandler.SlashCommand)
+            .RegisterSlashCommandHandler<NominateByIdHandler>(NominateByIdHandler.SlashCommand)
+            .RegisterSlashCommandHandler<NominateByNameHandler>(NominateByNameHandler.SlashCommand));
 
         var app = builder.Build();
 
@@ -59,17 +68,29 @@ public class Program
     {
         builder.Services.AddHttpClient<FplClient>();
         builder.Services.AddSingleton<IFplClient, FplClient>();
+        builder.Services.AddSingleton<IAuctionSetupService, AuctionSetupService>();
         builder.Services.AddSingleton<IFplService, FplService>();
         builder.Services.AddSingleton<IPlayerSaleService, PlayerSaleService>();
         builder.Services.AddSingleton<IAutoNominationService, AutoNominationService>();
+        AddAuctionServices(builder);
+    }
+
+    private static void AddAuctionServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IAuctionNominationService, AuctionNominationService>();
+        builder.Services.AddSingleton<IDataStore<SlackAuctionData>, DataStore<SlackAuctionData>>();
+        builder.Services.AddSingleton<IAuctionTimer, AuctionTimer>();
+        builder.Services.AddSingleton<ISlackAuctionManager, SlackAuctionManager>();
+        builder.Services.AddSingleton<ISlackAuctionService, SlackAuctionService>();
+        builder.Services.AddSingleton<ITimerEventHandler, SlackAuctionEventHandler>();
     }
 
     private static void AddRepositories(IServiceCollection services)
     {
-        services.AddSingleton<IPlayerRepository, PlayerRepository>();
+        services.AddSingleton<IAuctionPlayerRepository, AuctionPlayerRepository>();
+        services.AddSingleton<IManualPlayerRepository, ManualPlayerRepository>();
+        services.AddSingleton<IFplPlayerRepository, FplPlayerRepository>();
         services.AddSingleton<IAuctionTeamRepository, AuctionTeamRepository>();
-        services.AddSingleton<ISoldDataRepository, SoldDataRepository>();
-        services.AddSingleton<IAutoNominationRepository, AutoNominationRepository>();
     }
 
     private static void ConfigureSettings(WebApplicationBuilder builder)

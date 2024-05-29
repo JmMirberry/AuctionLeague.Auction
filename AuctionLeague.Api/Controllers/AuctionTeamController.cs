@@ -1,5 +1,4 @@
-using AuctionLeague.Data;
-using AuctionLeague.Data.Exceptions;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.Service.PlayerSale;
 using Microsoft.AspNetCore.Mvc;
@@ -49,17 +48,9 @@ namespace AuctionLeague.Controllers
         [Route("add-player")]
         public async Task<IActionResult> AddPlayer(string teamName, SoldPlayer player)
         {
-            try
-            {
-                await _playerSaleService.ProcessSaleByTeamName(player, teamName, true);
+            var result = await _playerSaleService.ProcessSaleByTeamName(player, teamName, true);
 
-                return NoContent();
-            }
-            catch (PlayerSaleException e)
-            {
-                return BadRequest(e.Message);
-            }
-            
+            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
         }
 
         [HttpPut]

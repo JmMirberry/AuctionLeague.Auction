@@ -1,4 +1,4 @@
-using AuctionLeague.Data;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
