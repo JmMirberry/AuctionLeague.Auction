@@ -16,13 +16,13 @@ namespace SlackAPI.Handlers
         }
         public Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            //var result = _slackAuctionService.StartAuction();
+            var result = _slackAuctionService.StartAuction();
 
             return Task.FromResult( new SlashCommandResponse
             {
                 Message = new Message
                 {
-                    Text =  "yay"//result.IsSuccess ? result.Value : result.Errors[0].Message
+                    Text =  result.IsSuccess ? result.Value : result.Errors[0].Message
                 },
                 ResponseType = ResponseType.InChannel
             });
