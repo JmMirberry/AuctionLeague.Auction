@@ -1,4 +1,5 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
+using SlackNet;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
 
@@ -8,24 +9,31 @@ namespace SlackAPI.Handlers
     {
         public const string SlashCommand = "/beginauction";
         private readonly ISlackAuctionService _slackAuctionService;
+        private readonly ISlackApiClient _slack;
 
-        public BeginAuctionHandler(ISlackAuctionService slackAuctionService)
+        public BeginAuctionHandler(ISlackApiClient slack, ISlackAuctionService slackAuctionService)
         {
+            _slack = slack;
             _slackAuctionService = slackAuctionService;
         }
-        public Task<SlashCommandResponse> Handle(SlashCommand command)
+        public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            Console.WriteLine($"{command.UserName} used the {SlashCommand} slash command in the {command.ChannelName} channel");
+            await _slack.Chat.PostMessage(new Message
+            {
+                Text = "Begin auction sent",
+                Channel = command.ChannelName
+            }).ConfigureAwait(false);
+
             var result = _slackAuctionService.StartAuction();
 
-            return Task.FromResult(new SlashCommandResponse
+            return new SlashCommandResponse
             {
                 Message = new Message
                 {
                     Text = result.IsSuccess ? result.Value : result.Errors[0].Message
                 },
                 ResponseType = ResponseType.InChannel
-            });
+            };
         }
     }
 }
