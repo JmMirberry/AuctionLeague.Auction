@@ -19,7 +19,7 @@ namespace SlackAPI.Handlers
 
         public async Task Handle(MessageEvent slackEvent)
         {
-            if (_auctionManager.AuctionLive()) return;
+            if (!_auctionManager.AuctionLive()) return;
 
             if (!int.TryParse(slackEvent.Text, out var bid))
             {
