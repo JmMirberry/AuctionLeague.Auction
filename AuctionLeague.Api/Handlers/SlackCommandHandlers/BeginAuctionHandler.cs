@@ -9,31 +9,23 @@ namespace SlackAPI.Handlers
     {
         public const string SlashCommand = "/beginauction";
         private readonly ISlackAuctionService _slackAuctionService;
-        private readonly ISlackApiClient _slack;
 
-        public BeginAuctionHandler(ISlackApiClient slack, ISlackAuctionService slackAuctionService)
+        public BeginAuctionHandler(ISlackAuctionService slackAuctionService)
         {
-            _slack = slack;
             _slackAuctionService = slackAuctionService;
         }
-        public async Task<SlashCommandResponse> Handle(SlashCommand command)
+        public Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            await _slack.Chat.PostMessage(new Message
-            {
-                Text = "Begin auction sent",
-                Channel = command.ChannelName
-            }).ConfigureAwait(false);
-
             //var result = _slackAuctionService.StartAuction();
 
-            return new SlashCommandResponse
+            return Task.FromResult( new SlashCommandResponse
             {
                 Message = new Message
                 {
                     Text =  "yay"//result.IsSuccess ? result.Value : result.Errors[0].Message
                 },
                 ResponseType = ResponseType.InChannel
-            };
+            });
         }
     }
 }
