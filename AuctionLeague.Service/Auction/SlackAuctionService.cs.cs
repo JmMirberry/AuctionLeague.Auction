@@ -62,7 +62,7 @@ namespace AuctionLeague.Service.Auction
 
             _auctionManager.NominatePlayer(playerSearchResult.Value, bidder);
 
-            return Result.Ok($"Auction started for {playerSearchResult.Value.FirstName} {playerSearchResult.Value.FirstName}");
+            return Result.Ok($"{playerSearchResult.Value.FirstName} {playerSearchResult.Value.LastName} Nominated");
         }
 
         public Result<AuctionPlayer> CheckNominatedPlayer()
