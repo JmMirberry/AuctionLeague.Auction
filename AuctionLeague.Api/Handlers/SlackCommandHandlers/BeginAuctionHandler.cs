@@ -24,13 +24,13 @@ namespace SlackAPI.Handlers
                 Channel = command.ChannelName
             }).ConfigureAwait(false);
 
-            var result = _slackAuctionService.StartAuction();
+            //var result = _slackAuctionService.StartAuction();
 
             return new SlashCommandResponse
             {
                 Message = new Message
                 {
-                    Text = result.IsSuccess ? result.Value : result.Errors[0].Message
+                    Text =  "yay"//result.IsSuccess ? result.Value : result.Errors[0].Message
                 },
                 ResponseType = ResponseType.InChannel
             };
