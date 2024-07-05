@@ -38,8 +38,7 @@ namespace AuctionLeague.Controllers
         [Route("[Controller]/Command")]
         public async Task<IActionResult> Command()
         {
-            var result = await _requestHandler.HandleSlashCommandRequest(HttpContext.Request, _endpointConfig);
-            return Ok(result);
+           return await _requestHandler.HandleSlashCommandRequest(HttpContext.Request, _endpointConfig);
         }
     }
 }
