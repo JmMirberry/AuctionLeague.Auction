@@ -13,18 +13,17 @@ namespace AuctionLeague.Service.Auction
         private readonly ISlackAuctionManager _auctionManager;
         private readonly IAuctionNominationService _nominationService;
         private readonly IAutoNominationService _autoNominationSevice;
-        private readonly ISlackApiClient _slack;
 
-        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService, ISlackApiClient slack)
+        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService)
         {
             _auctionManager = auctionManager;
             _nominationService = nominationService;
-            _slack = slack;
+            
         }
 
         public Result<string> StartAuction()
         {
-            _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = "Message", Channel = "dev" }, null);
+            
             var result = _auctionManager.StartAuction();
 
             if (result.IsFailed)

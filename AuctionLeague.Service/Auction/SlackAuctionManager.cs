@@ -4,6 +4,7 @@ using AuctionLeague.Data.Slack;
 using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.DataStore;
 using FluentResults;
+using SlackNet;
 
 namespace AuctionLeague.Service.Auction
 {
@@ -11,12 +12,14 @@ namespace AuctionLeague.Service.Auction
     public class SlackAuctionManager : ISlackAuctionManager 
     {      
         private readonly IAuctionTimer _timer; 
-        private readonly IDataStore<SlackAuctionData> _dataStore; 
+        private readonly IDataStore<SlackAuctionData> _dataStore;
+        private readonly ISlackApiClient _slack;
 
-        public SlackAuctionManager(IAuctionTimer timer, IDataStore<SlackAuctionData> dataStore)
+        public SlackAuctionManager(IAuctionTimer timer, IDataStore<SlackAuctionData> dataStore, ISlackApiClient slack)
         { 
             _timer = timer;
             _dataStore = dataStore;
+            _slack = slack;
         }
 
         public bool AuctionLive()
@@ -26,6 +29,8 @@ namespace AuctionLeague.Service.Auction
         
         public Result<AuctionPlayer> StartAuction() 
         {
+            _dataStore.Data.Channel = "dev";
+            _slack.Chat.PostMessage(new SlackNet.WebApi.Message() { Text = _dataStore.Data.Channel, Channel = "dev" }, null);
             var player = _dataStore.Data?.Player; 
             if (player == null)
             {
