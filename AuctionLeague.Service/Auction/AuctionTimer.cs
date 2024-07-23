@@ -19,8 +19,8 @@ namespace AuctionLeague.Service.Auction
         { 
             _eventHandler = eventHandler;
             _totalTime = settings.Value.TimeToSoldMs / 1000;  
-            _timeToFirstEvent = settings.Value.TimeToOnceMs /1000;  
-            _timeToSecondEvent = settings.Value.TimeToTwiceMs /1000;    
+            _timeToFirstEvent = settings.Value.TimeToOnceMs / 1000;  
+            _timeToSecondEvent = settings.Value.TimeToTwiceMs / 1000;    
             _timer = new System.Timers.Timer(1000); // Timer interval set to 1 second
             _timer.Elapsed += TimerElapsed;
             _timer.AutoReset = true;
@@ -61,6 +61,11 @@ namespace AuctionLeague.Service.Auction
                 _timer.Stop();
                 _eventHandler.HandleTimerEnd();  
             } 
+        }
+
+        public bool TimerRunning()
+        {
+            return _timer.Enabled;
         }
     }
 }
