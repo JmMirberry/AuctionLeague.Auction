@@ -22,6 +22,7 @@ namespace AuctionLeague.Service.Auction
             _timeToSecondEvent = settings.Value.TimeToTwiceMs;    
             _timer = new System.Timers.Timer(1000); // Timer interval set to 1 second
             _timer.Elapsed += TimerElapsed;
+            _timer.AutoReset = true;
         }
         
         public bool TimerRunning() => _timer.Enabled;
@@ -58,7 +59,8 @@ namespace AuctionLeague.Service.Auction
                 _eventHandler.HandleSecondEvent(); 
             }  
             else if (_remainingTime <= 0)  
-            {  
+            {
+                _timer.Stop();
                 _eventHandler.HandleTimerEnd();  
             } 
         } 
