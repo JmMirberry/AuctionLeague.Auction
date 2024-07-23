@@ -15,7 +15,6 @@ namespace SlackAPI.Handlers
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            Console.WriteLine($"{command.UserName} used the {SlashCommand} slash command in the {command.ChannelName} channel");
             var result = await _slackAuctionService.NominateByName(command.Text, command.UserName);
 
             return new SlashCommandResponse

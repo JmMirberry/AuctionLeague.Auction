@@ -31,7 +31,7 @@ namespace AuctionLeague.Service.Auction
         {
             // TODO - remove this once using sale service
             
-            await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {_dataStore.Data.Bidder} for {_dataStore.Data.Bid}");
+            await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.LastName} sold to {_dataStore.Data.Bidder} for {_dataStore.Data.Bid}");
             // var initialMessage = _dataStore.Data.Bid > 0 ? "Sold!" : "Not sold";
             // await SendMessage(initialMessage);
             //
