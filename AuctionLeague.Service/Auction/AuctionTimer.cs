@@ -19,7 +19,7 @@ namespace AuctionLeague.Service.Auction
         public AuctionTimer(ITimerEventHandler eventHandler, IOptions<AuctionSettings> settings, ISlackApiClient slackClient)
         { 
             _eventHandler = eventHandler;
-            _totalTime = settings.Value.TimeToSoldMs;  
+            _totalTime = settings.Value.TimeToSoldMs / 1000;  
             _timeToFirstEvent = settings.Value.TimeToOnceMs;  
             _timeToSecondEvent = settings.Value.TimeToTwiceMs;    
             _timer = new System.Timers.Timer(1000); // Timer interval set to 1 second
