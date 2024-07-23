@@ -52,7 +52,7 @@ namespace AuctionLeague.Service.Auction
         
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            SendMessage("elapsed");
+            SendMessage(_remainingTime.ToString());
             _remainingTime--;
 
             if (_remainingTime == _timeToFirstEvent) 
