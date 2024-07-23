@@ -43,7 +43,7 @@ namespace AuctionLeague.Service.Auction
             // }
             //
             // await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {_dataStore.Data.Bidder}. {result.Errors}");
-
+            _dataStore.Data = new SlackAuctionData();
         }
 
         private async Task SendMessage(string message)
