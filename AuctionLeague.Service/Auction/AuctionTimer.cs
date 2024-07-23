@@ -1,6 +1,7 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
 using System.Timers;
 using Microsoft.Extensions.Options;
+using SlackNet;
 
 namespace AuctionLeague.Service.Auction
 {    
@@ -13,8 +14,9 @@ namespace AuctionLeague.Service.Auction
         private readonly int _totalTime;
         private int _remainingTime;
         private readonly ITimerEventHandler _eventHandler;
+        private readonly ISlackApiClient _slackClient;
 
-        public AuctionTimer(ITimerEventHandler eventHandler, IOptions<AuctionSettings> settings)
+        public AuctionTimer(ITimerEventHandler eventHandler, IOptions<AuctionSettings> settings, ISlackApiClient slackClient)
         { 
             _eventHandler = eventHandler;
             _totalTime = settings.Value.TimeToSoldMs;  
@@ -23,6 +25,7 @@ namespace AuctionLeague.Service.Auction
             _timer = new System.Timers.Timer(1000); // Timer interval set to 1 second
             _timer.Elapsed += TimerElapsed;
             _timer.AutoReset = true;
+            _slackClient = slackClient;
         }
         
         public bool TimerRunning() => _timer.Enabled;
@@ -31,6 +34,7 @@ namespace AuctionLeague.Service.Auction
         { 
             _remainingTime = _totalTime;  
             _timer.Start();
+            SendMessage("started");
         }
         
         public void RestartTimer() 
@@ -47,7 +51,8 @@ namespace AuctionLeague.Service.Auction
         }  
         
         private void TimerElapsed(object sender, ElapsedEventArgs e)
-        {  
+        {
+            SendMessage("elapsed");
             _remainingTime--;
 
             if (_remainingTime == _timeToFirstEvent) 
@@ -63,6 +68,17 @@ namespace AuctionLeague.Service.Auction
                 _timer.Stop();
                 _eventHandler.HandleTimerEnd();  
             } 
-        } 
+        }
+
+        private async Task SendMessage(string message)
+        {
+            var slackMessage = new SlackNet.WebApi.Message()
+            {
+                Text = message,
+                Channel = "dev"
+            };
+
+            await _slackClient.Chat.PostMessage(slackMessage, null);
+        }
     }
 }
