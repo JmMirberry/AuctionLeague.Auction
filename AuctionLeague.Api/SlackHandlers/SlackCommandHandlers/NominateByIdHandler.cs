@@ -24,7 +24,8 @@ namespace SlackAPI.Handlers
                 {
                     Message = new Message
                     {
-                        Text = "Invalid player Id"
+                        Text = "Invalid player Id",
+                        
                     },
                     ResponseType = ResponseType.Ephemeral
                 };

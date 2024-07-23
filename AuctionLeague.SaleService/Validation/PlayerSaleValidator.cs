@@ -1,7 +1,7 @@
 using AuctionLeague.Data.Auction;
 using FluentResults;
 
-namespace AuctionLeague.Service.Validation
+namespace AuctionLeague.SaleService.Validation
 {
     public static class PlayerSaleResultValidator
     {

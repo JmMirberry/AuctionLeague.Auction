@@ -27,12 +27,12 @@ namespace AuctionLeague.Controllers
             return Ok();
         }
     
-        [HttpPost]
-        [Route("[Controller]/Event")]
-        public async Task<IActionResult> Event()
-        {
-             return await _requestHandler.HandleEventRequest(HttpContext.Request, _endpointConfig);
-        }
+        // [HttpPost]
+        // [Route("[Controller]/Event")]
+        // public async Task<IActionResult> Event()
+        // {
+        //      return await _requestHandler.HandleEventRequest(HttpContext.Request, _endpointConfig);
+        // }
     
         [HttpPost]
         [Route("[Controller]/Command")]

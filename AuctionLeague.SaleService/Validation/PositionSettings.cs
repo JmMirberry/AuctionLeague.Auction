@@ -1,6 +1,6 @@
 using AuctionLeague.Data.FplPlayer;
 
-namespace AuctionLeague.Service.Validation
+namespace AuctionLeague.SaleService.Validation
 {
     public static class PositionSettings
     {

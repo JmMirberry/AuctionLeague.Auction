@@ -2,7 +2,7 @@
 using AuctionLeague.Data.Auction;
 using FluentResults;
 
-namespace AuctionLeague.Service.PlayerSale;
+namespace AuctionLeague.SaleService;
 
 public interface IPlayerSaleService
 {

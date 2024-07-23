@@ -1,10 +1,10 @@
 using AuctionLeague.Data;
 using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.Service.Validation;
+using AuctionLeague.SaleService.Validation;
 using FluentResults;
 
-namespace AuctionLeague.Service.PlayerSale
+namespace AuctionLeague.SaleService
 {
     public class PlayerSaleService : IPlayerSaleService
     {
