@@ -14,6 +14,7 @@ namespace SlackAPI.Handlers
         {
             _slackAuctionService = slackAuctionService;
         }
+        
         public Task<SlashCommandResponse> Handle(SlashCommand command)
         {
             var result = _slackAuctionService.StartAuction();

@@ -1,6 +1,6 @@
 using AuctionLeague.Data.Auction;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.Service.PlayerSale;
+using AuctionLeague.SaleService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionLeague.Controllers

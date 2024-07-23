@@ -2,10 +2,9 @@
 using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Data.Settings;
 using AuctionLeague.MongoDb.Abstractions;
-using AuctionLeague.MongoDb.Repositories;
 using AuctionLeague.Service.Interfaces;
 
-namespace AuctionLeague.Service
+namespace AuctionLeague.Service.AuctionSetup
 {
     public class AuctionSetupService : IAuctionSetupService
     {
@@ -13,15 +12,15 @@ namespace AuctionLeague.Service
         private readonly IFplPlayerRepository _fplPlayerRepository;
         private readonly IManualPlayerRepository _manualPlayerRepository;
         private readonly IAutoNominationService _autoNominationService;
-        private readonly IAuctionTeamRepository _auctionTeamRepository;
+        //private readonly IAuctionTeamRepository _auctionTeamRepository;
 
-        public AuctionSetupService(IAuctionPlayerRepository playerRepository, IFplPlayerRepository fplPlayerRepository, IManualPlayerRepository manualPlayerRepository, IAutoNominationService autoNominationService, IAuctionTeamRepository auctionTeamRepository)
+        public AuctionSetupService(IAuctionPlayerRepository playerRepository, IFplPlayerRepository fplPlayerRepository, IManualPlayerRepository manualPlayerRepository, IAutoNominationService autoNominationService)
         {
             _playerRepository = playerRepository;
             _fplPlayerRepository = fplPlayerRepository;
             _manualPlayerRepository = manualPlayerRepository;
             _autoNominationService = autoNominationService;
-            _auctionTeamRepository = auctionTeamRepository;
+            //_auctionTeamRepository = auctionTeamRepository;
         }
 
         public async Task InitialiseAuctionData()
@@ -29,7 +28,6 @@ namespace AuctionLeague.Service
             await _playerRepository.RemoveAllPlayersAsync();
             var fplPlayersTask = _fplPlayerRepository.GetPlayersAsync();
             var manualPlayersTask = _manualPlayerRepository.GetPlayersAsync();
-
 
             await _playerRepository.AddPlayersAsync(ToDefaultAuctionPlayers(await fplPlayersTask).Concat(ToDefaultAuctionPlayers(await manualPlayersTask)));
         }
@@ -42,9 +40,9 @@ namespace AuctionLeague.Service
         public async Task ResetSold()
         {
             var resetSold = _playerRepository.ResetSold();
-            var removeFromTeams = _auctionTeamRepository.RemovePlayersFromAllAuctionTeams();
+            //var removeFromTeams = _auctionTeamRepository.RemovePlayersFromAllAuctionTeams();
 
-            await Task.WhenAll(resetSold, removeFromTeams);
+            await Task.WhenAll(resetSold);
         }
 
         private IEnumerable<AuctionPlayer> ToDefaultAuctionPlayers(IEnumerable<Player> fplPlayers)

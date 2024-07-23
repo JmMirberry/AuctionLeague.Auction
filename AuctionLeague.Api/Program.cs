@@ -4,18 +4,18 @@ using AuctionLeague.Handlers.SlackCommandHandlers;
 using AuctionLeague.MongoDb;
 using AuctionLeague.MongoDb.Abstractions;
 using AuctionLeague.MongoDb.Repositories;
+using AuctionLeague.SaleService;
 using AuctionLeague.Service;
 using AuctionLeague.Service.Auction;
 using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.AuctionSetup;
 using AuctionLeague.Service.AutoNomination;
 using AuctionLeague.Service.DataStore;
 using AuctionLeague.Service.Interfaces;
-using AuctionLeague.Service.PlayerSale;
+using AuctionLeague.SlackHandlers.SlackCommandHandlers;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
 using SlackNet.AspNetCore;
-using SlackNet.Events;
-using SlackNet.Interaction;
 
 namespace AuctionLeague;
 
@@ -47,12 +47,13 @@ public class Program
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
-            .RegisterEventHandler<MessageEvent, SlackMessageHandler>()
+            //.RegisterEventHandler<MessageEvent, SlackMessageHandler>()
             .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand)
             .RegisterSlashCommandHandler<BeginAuctionHandler>(BeginAuctionHandler.SlashCommand)
             .RegisterSlashCommandHandler<KillAuctionHandler>(KillAuctionHandler.SlashCommand)
             .RegisterSlashCommandHandler<NominateByIdHandler>(NominateByIdHandler.SlashCommand)
-            .RegisterSlashCommandHandler<NominateByNameHandler>(NominateByNameHandler.SlashCommand));
+            .RegisterSlashCommandHandler<NominateByNameHandler>(NominateByNameHandler.SlashCommand)
+            .RegisterSlashCommandHandler<BidHandler>(BidHandler.SlashCommand));
 
         var app = builder.Build();
 

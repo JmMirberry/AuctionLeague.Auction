@@ -1,7 +1,5 @@
 using AuctionLeague.Data.Settings;
 using AuctionLeague.Service;
-using AuctionLeague.Service.Interfaces;
-using AuctionLeague.Service.PlayerSale;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionLeague.Controllers
