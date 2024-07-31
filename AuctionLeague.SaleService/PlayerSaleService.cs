@@ -19,35 +19,35 @@ namespace AuctionLeague.SaleService
 
         public async Task<Result<SoldData>> ProcessSaleByBidder(SoldPlayer soldPlayer, string bidder, bool isSold)
         {
-            var team = await GetAuctionTeamByBidder(bidder);
-            if (team == null)
-            {
-                team = new AuctionTeam
-                {
-                    TeamName = bidder,
-                    SlackBidders = new List<string> { bidder }
+            // var team = await GetAuctionTeamByBidder(bidder);
+            // if (team == null)
+            // {
+            //     team = new AuctionTeam
+            //     {
+            //         TeamName = bidder,
+            //         SlackBidders = new List<string> { bidder }
+            //
+            //     };
+            //     await _auctionTeamsRepository.AddAuctionTeamAsync(team);
+            // }
 
-                };
-                await _auctionTeamsRepository.AddAuctionTeamAsync(team);
-            }
-
-            return await ProcessSale(soldPlayer, team, isSold);
+            return await ProcessSale(soldPlayer, new AuctionTeam(), isSold);
         }
 
         public async Task<Result<SoldData>> ProcessSaleByTeamName(SoldPlayer soldPlayer, string teamName, bool isSold)
         {
-            var team = await _auctionTeamsRepository.GetAuctionTeamAsync(teamName);
+            // var team = await _auctionTeamsRepository.GetAuctionTeamAsync(teamName);
+            //
+            // if (team == null)
+            // {
+            //     team = new AuctionTeam
+            //     {
+            //         TeamName = teamName
+            //     };
+            //     await _auctionTeamsRepository.AddAuctionTeamAsync(team);
+            // }
 
-            if (team == null)
-            {
-                team = new AuctionTeam
-                {
-                    TeamName = teamName
-                };
-                await _auctionTeamsRepository.AddAuctionTeamAsync(team);
-            }
-
-            return await ProcessSale(soldPlayer, team, isSold);
+            return await ProcessSale(soldPlayer, new AuctionTeam(), isSold);
         }
 
 
@@ -78,17 +78,17 @@ namespace AuctionLeague.SaleService
 
         private async Task<Result<SoldData>> ProcessSale(SoldPlayer soldPlayer, AuctionTeam team, bool isSold)
         {
-            if (isSold)
-            {
-                var saleValidationResult = PlayerSaleResultValidator.ValidateSale(team, soldPlayer);
-
-                if (saleValidationResult.IsFailed)
-                {
-                    return Result.Fail(saleValidationResult.Errors);
-                }
-
-                await _auctionTeamsRepository.AddPlayerToAuctionTeamAsync(team.TeamName, soldPlayer);
-            }
+            // if (isSold)
+            // {
+            //     var saleValidationResult = PlayerSaleResultValidator.ValidateSale(team, soldPlayer);
+            //
+            //     if (saleValidationResult.IsFailed)
+            //     {
+            //         return Result.Fail(saleValidationResult.Errors);
+            //     }
+            //
+            //     await _auctionTeamsRepository.AddPlayerToAuctionTeamAsync(team.TeamName, soldPlayer);
+            // }
 
             var saleData = new SoldData
             {
