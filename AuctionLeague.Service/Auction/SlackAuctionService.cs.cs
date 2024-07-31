@@ -44,19 +44,19 @@ namespace AuctionLeague.Service.Auction
             _auctionManager.BidMade(bid, bidder);
         }
 
-        public async Task<Result<string>> NominateByName(string lastNameSearch, string bidder)
+        public async Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch, string bidder)
         {
             var nominationSearchResult = await _nominationService.NominateByName(lastNameSearch);
             return NominatePlayer(nominationSearchResult.Value, bidder);
         }
 
-        public async Task<Result<string>> NominateById(int playerId, string bidder)
+        public async Task<Result<AuctionPlayer>> NominateById(int playerId, string bidder)
         {
             var nominationSearchResult = await _nominationService.NominateById(playerId);
             return NominatePlayer(nominationSearchResult.Value, bidder);
         }
 
-        private Result<string> NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder)
+        private Result<AuctionPlayer> NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder)
         {
             if (playerSearchResult.IsFailed)
             {
@@ -65,7 +65,7 @@ namespace AuctionLeague.Service.Auction
 
             _auctionManager.NominatePlayer(playerSearchResult.Value, bidder);
 
-            return Result.Ok($"{playerSearchResult.Value.FirstName} {playerSearchResult.Value.LastName} Nominated");
+            return Result.Ok(playerSearchResult.Value);
         }
 
         public Result<AuctionPlayer> CheckNominatedPlayer()
