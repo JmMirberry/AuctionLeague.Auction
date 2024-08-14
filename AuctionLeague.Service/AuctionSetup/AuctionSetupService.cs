@@ -57,7 +57,6 @@ namespace AuctionLeague.Service.AuctionSetup
                 Value = player.Value,
                 TotalPointsPreviousYear = player.TotalPointsPreviousYear,
                 IsFplPlayer = true,
-                IsAutonomination = false,
                 IsSold = false
             });
         }
@@ -72,7 +71,6 @@ namespace AuctionLeague.Service.AuctionSetup
                 Team = "Unknown",
                 Position = Position.Unknown,
                 IsFplPlayer = true,
-                IsAutonomination = false,
                 IsSold = false
             });
         }

@@ -4,6 +4,9 @@ namespace AuctionLeague.Data.Settings;
 
 public class AutonominationSettings
 {
-    public Position Position { get; set; }
-    public double MinValue { get; set; }
+    public int Round { get; set; }
+    public double GkpMinValue { get; set; }
+    public double DefMinValue { get; set; }
+    public double MidMinValue { get; set; }
+    public double FwdMinValue { get; set; }
 }

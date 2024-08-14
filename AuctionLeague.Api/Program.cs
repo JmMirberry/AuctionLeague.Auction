@@ -92,6 +92,7 @@ public class Program
         services.AddSingleton<IManualPlayerRepository, ManualPlayerRepository>();
         services.AddSingleton<IFplPlayerRepository, FplPlayerRepository>();
         services.AddSingleton<IAuctionTeamRepository, AuctionTeamRepository>();
+        services.AddSingleton<IAutoNominationRepository, AutoNominationRepository>();
     }
 
     private static void ConfigureSettings(WebApplicationBuilder builder)

@@ -23,7 +23,6 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     Message = new Message
                     {
                         Text = "Invalid player Id",
-                        
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
@@ -31,11 +30,22 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 
             var result = await _slackAuctionService.NominateById(id, command.UserName);
 
+            if (result.IsFailed)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = result.Errors[0].Message,
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
+
             return new SlashCommandResponse
             {
                 Message = new Message
                 {
-                    //Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
                     Channel = command.ChannelName,
                     Blocks =
                     {

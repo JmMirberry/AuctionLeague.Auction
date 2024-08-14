@@ -31,11 +31,13 @@ namespace AuctionLeague.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post(ManualPlayer newPlayer)
+        public async Task<IActionResult> Post(List<ManualPlayer> newPlayers)
         {
-            await _playerRepository.AddPlayerAsync(newPlayer);
-
-            return CreatedAtAction(nameof(Get), newPlayer);
+            foreach (var player in newPlayers)
+            {
+                await _playerRepository.AddPlayerAsync(player);
+            }
+            return CreatedAtAction(nameof(Get), newPlayers);
         }
 
         [HttpPut("{playerId}")]

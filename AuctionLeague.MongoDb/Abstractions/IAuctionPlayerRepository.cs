@@ -14,9 +14,5 @@ public interface IAuctionPlayerRepository
     Task RemovePlayerAsync(int playerId);
     Task RemoveAllPlayersAsync();
     Task SetPlayerAsSold(int playerId);
-    Task SetAutoNominations(IEnumerable<AuctionPlayer> autoNominationPlayers);
-
-    Task<IEnumerable<AuctionPlayer>> GetAutoNominations();
     Task ResetSold();
-    Task ResetAutoNomination();
 }

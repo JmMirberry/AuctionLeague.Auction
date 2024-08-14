@@ -2,11 +2,11 @@ using AuctionLeague.Data.Auction;
 using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.MongoDb;
 
-public static class AuctionPlayerMapper
+public static class AutoNomiatedPlayerMapper
 {
-    public static AuctionPlayerEntity ToEntity(this AuctionPlayer player)
+    public static AutoNominatedPlayerEntity ToAutoNominatedEntity(this AuctionPlayer player)
     {
-        return new AuctionPlayerEntity
+        return new AutoNominatedPlayerEntity
         {
             _id = player.PlayerId.ToString(),
             PlayerId = player.PlayerId,
@@ -16,12 +16,11 @@ public static class AuctionPlayerMapper
             Position = player.Position,
             Value = player.Value,
             TotalPointsPreviousYear = player.TotalPointsPreviousYear,
-            IsFplPlayer = player.IsFplPlayer,
-            IsSold = player.IsSold
+            Nominated = false
         };
     }
 
-    public static AuctionPlayer ToPlayer(this AuctionPlayerEntity player)
+    public static AuctionPlayer ToPlayer(this AutoNominatedPlayerEntity player)
     {
         return new AuctionPlayer
         {
@@ -31,9 +30,7 @@ public static class AuctionPlayerMapper
             Team = player.Team,
             Position = player.Position,
             Value = player.Value,
-            TotalPointsPreviousYear = player.TotalPointsPreviousYear,
-            IsFplPlayer = player.IsFplPlayer,
-            IsSold = player.IsSold
+            TotalPointsPreviousYear = player.TotalPointsPreviousYear
         };
     }
 }
