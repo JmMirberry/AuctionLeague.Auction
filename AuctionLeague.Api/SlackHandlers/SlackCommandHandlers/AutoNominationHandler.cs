@@ -1,34 +1,26 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.Interfaces;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
 
 namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 {
-    public class NominateByIdHandler : ISlashCommandHandler
+    public class AutoNominationHandler : ISlashCommandHandler
     {
-        public const string SlashCommand = "/nominatebyid";
+        public const string SlashCommand = "/autoNominate";
+        private readonly IAutoNominationService _service;
         private readonly ISlackAuctionService _slackAuctionService;
 
-        public NominateByIdHandler(ISlackAuctionService slackAuctionService)
+        public AutoNominationHandler(IAutoNominationService service, ISlackAuctionService slackAuctionService)
         {
+            _service = service;
             _slackAuctionService = slackAuctionService;
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            if (!int.TryParse(command.Text, out var id))
-            {
-                return new SlashCommandResponse
-                {
-                    Message = new Message
-                    {
-                        Text = "Invalid player Id",
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
-
-            var result = await _slackAuctionService.NominateById(id, command.UserName, 1);
+            
+            var result = await _service.GetAutoNomination();
 
             if (result.IsFailed)
             {
@@ -41,6 +33,8 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     ResponseType = ResponseType.Ephemeral
                 };
             }
+
+            var nominatePlayer = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0);
 
             return new SlashCommandResponse
             {

@@ -53,7 +53,8 @@ public class Program
             .RegisterSlashCommandHandler<KillAuctionHandler>(KillAuctionHandler.SlashCommand)
             .RegisterSlashCommandHandler<NominateByIdHandler>(NominateByIdHandler.SlashCommand)
             .RegisterSlashCommandHandler<NominateByNameHandler>(NominateByNameHandler.SlashCommand)
-            .RegisterSlashCommandHandler<BidHandler>(BidHandler.SlashCommand));
+            .RegisterSlashCommandHandler<BidHandler>(BidHandler.SlashCommand)
+            .RegisterSlashCommandHandler<AutoNominationHandler>(AutoNominationHandler.SlashCommand));
 
         var app = builder.Build();
 

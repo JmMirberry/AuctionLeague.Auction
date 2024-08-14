@@ -5,6 +5,7 @@ using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.DataStore;
 using FluentResults;
 using SlackNet;
+using System.ComponentModel;
 
 namespace AuctionLeague.Service.Auction
 {
@@ -38,12 +39,12 @@ namespace AuctionLeague.Service.Auction
             return Result.Ok(player);
         }
         
-        public void NominatePlayer(AuctionPlayer player, string bidder)
+        public void NominatePlayer(AuctionPlayer player, string bidder, int? bid)
         {   
             _dataStore.Data = new SlackAuctionData
             {           
                 Bidder = bidder, 
-                Bid = 1, 
+                Bid = bid ?? 0, 
                 Player = player   
             };
         }

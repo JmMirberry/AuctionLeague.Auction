@@ -9,7 +9,7 @@ public interface ISlackAuctionManager
 {
     bool AuctionLive();
     Result<AuctionPlayer> StartAuction();
-    void NominatePlayer(AuctionPlayer player, string bidder);
+    void NominatePlayer(AuctionPlayer player, string bidder, int? bid);
     AuctionPlayer NominatedPlayer();
     SlackAuctionData CurrentBid();
     void EndAuction();
