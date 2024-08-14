@@ -49,8 +49,8 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                             {
                                 new Markdown($"*Position:*\n{result.Value.Position}"),
                                 new Markdown($"*Club:*\n{result.Value.Team}"),
-                                new Markdown($"*FPL Value*\n${result.Value.Value}"),
-                                new Markdown($"*FPL Points*\n${result.Value.TotalPointsPreviousYear}"),
+                                new Markdown($"*FPL Value*\n{result.Value.Value}"),
+                                new Markdown($"*FPL Points*\n{result.Value.TotalPointsPreviousYear}"),
                                 }
                         }
                     }
