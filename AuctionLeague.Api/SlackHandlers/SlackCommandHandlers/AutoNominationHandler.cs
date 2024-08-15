@@ -34,7 +34,19 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 };
             }
 
-            var nominatePlayer = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0);
+            var nominatedPlayerResult = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0);
+
+            if (nominatedPlayerResult.IsFailed)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = nominatedPlayerResult.Errors[0].Message,
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
 
             return new SlashCommandResponse
             {
@@ -45,16 +57,16 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     {
                         new SectionBlock
                         {
-                            Text = new Markdown($"*{result.Value.PlayerId} - {result.Value.FirstName} {result.Value.LastName}*"),
+                            Text = new Markdown($"*{nominatedPlayerResult.Value.PlayerId} - {nominatedPlayerResult.Value.FirstName} {nominatedPlayerResult.Value.LastName}*"),
                         },
                         new SectionBlock
                         {
                             Fields = new List<TextObject>
                             {
-                                new Markdown($"*Position:*\n{result.Value.Position}"),
-                                new Markdown($"*Club:*\n{result.Value.Team}"),
-                                new Markdown($"*FPL Value*\n{result.Value.Value}"),
-                                new Markdown($"*FPL Points*\n{result.Value.TotalPointsPreviousYear}"),
+                                new Markdown($"*Position:*\n{nominatedPlayerResult.Value.Position}"),
+                                new Markdown($"*Club:*\n{nominatedPlayerResult.Value.Team}"),
+                                new Markdown($"*FPL Value*\n{nominatedPlayerResult.Value.Value}"),
+                                new Markdown($"*FPL Points*\n{nominatedPlayerResult.Value.TotalPointsPreviousYear}"),
                                 }
                         }
                     }

@@ -12,7 +12,6 @@ namespace AuctionLeague.Service.Auction
     {
         private readonly ISlackAuctionManager _auctionManager;
         private readonly IAuctionNominationService _nominationService;
-        private readonly IAutoNominationService _autoNominationSevice;
 
         public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService)
         {

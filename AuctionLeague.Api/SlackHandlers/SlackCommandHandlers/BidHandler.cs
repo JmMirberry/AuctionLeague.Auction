@@ -63,8 +63,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 {
                     Message = new Message
                     {
-                        Text = $"Bids must be greater than {currentBid.Bid} bid by {currentBid.Bidder}",
-                        
+                        Text = $"Bid must be greater than {currentBid.Bid} bid by {currentBid.Bidder}",
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
@@ -74,11 +73,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 
             return new SlashCommandResponse
             {
-                Message = new Message
-                {
-                    Text = $"{command.UserName} bids {bid}",
-                },
-                ResponseType = ResponseType.InChannel
+                ResponseType = ResponseType.InChannel // simple response means that only the command shows
             };
         }
     }

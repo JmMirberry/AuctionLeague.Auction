@@ -30,14 +30,16 @@ namespace AuctionLeague.Service.Auction
 
         public async Task HandleTimerEnd()
         {
-            var initialMessage = _dataStore.Data.Bid > 0 ? "Sold!" : "Not sold";
+            var sold = _dataStore.Data.Bid > 0;
+            var initialMessage = sold ? "Sold!" : "Not sold";
             await SendMessage(initialMessage);
             
             var displayName = (await _slackClient.Users.Info(_dataStore.Data.Bidder)).Name;
             await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.LastName} sold to {displayName} for {_dataStore.Data.Bid}");
-            
-            
-            var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName, _dataStore.Data.Bid > 0);
+
+            if (!sold) return;
+
+            var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName);
             
             if (result.IsSuccess)
             {
