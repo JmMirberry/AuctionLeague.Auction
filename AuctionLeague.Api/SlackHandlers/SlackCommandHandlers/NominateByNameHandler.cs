@@ -16,7 +16,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            var result = await _slackAuctionService.NominateByName(command.Text, command.UserName);
+            var result = await _slackAuctionService.NominateByName(command.Text, command.UserName, command.ChannelName);
 
             return new SlashCommandResponse
             {

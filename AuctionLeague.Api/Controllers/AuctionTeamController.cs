@@ -48,7 +48,7 @@ namespace AuctionLeague.Controllers
         [Route("add-player")]
         public async Task<IActionResult> AddPlayer(string teamName, SoldPlayer player)
         {
-            var result = await _playerSaleService.ProcessSaleByTeamName(player, teamName, true);
+            var result = await _playerSaleService.ProcessSaleByTeamName(player, teamName);
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
         }

@@ -28,7 +28,7 @@ namespace AuctionLeague.Service.Auction
         
         public Result<AuctionPlayer> StartAuction() 
         {
-            _dataStore.Data.Channel = "dev";
+            _dataStore.Data.Channel ??= "v2-bot-test";
             
             var player = _dataStore.Data?.Player; 
             if (player == null)
@@ -39,13 +39,14 @@ namespace AuctionLeague.Service.Auction
             return Result.Ok(player);
         }
         
-        public void NominatePlayer(AuctionPlayer player, string bidder, int? bid)
+        public void NominatePlayer(AuctionPlayer player, string bidder, int? bid, string channel)
         {   
             _dataStore.Data = new SlackAuctionData
             {           
                 Bidder = bidder, 
                 Bid = bid ?? 0, 
-                Player = player   
+                Player = player,
+                Channel = channel
             };
         }
         
