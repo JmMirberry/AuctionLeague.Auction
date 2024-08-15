@@ -38,9 +38,9 @@ namespace AuctionLeague.Service.Auction
             _auctionManager.EndAuction();
         }
 
-        public void SubmitBid(int bid, string bidder)
+        public void SubmitBid(int bid, string bidderId)
         {
-            _auctionManager.BidMade(bid, bidder);
+            _auctionManager.BidMade(bid, bidderId);
         }
 
         public async Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch, string bidder, string channel)

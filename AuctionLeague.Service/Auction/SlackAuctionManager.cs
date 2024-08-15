@@ -43,7 +43,7 @@ namespace AuctionLeague.Service.Auction
         {   
             _dataStore.Data = new SlackAuctionData
             {           
-                Bidder = bidder, 
+                BidderUserId = bidder, 
                 Bid = bid ?? 0, 
                 Player = player,
                 Channel = channel
@@ -70,14 +70,14 @@ namespace AuctionLeague.Service.Auction
         {     
             _timer.RestartTimer(); 
             _dataStore.Data.Bid = bid;
-            _dataStore.Data.Bidder = bidder;  
+            _dataStore.Data.BidderUserId = bidder;  
         } 
         
         private void ResetData() 
         {  
             _dataStore.Data = new SlackAuctionData 
-            {  
-                Bidder = null,   
+            {
+                BidderUserId = null,   
                 Bid = 0,  
                 Player = null 
             };

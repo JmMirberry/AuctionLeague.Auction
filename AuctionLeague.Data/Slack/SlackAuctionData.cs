@@ -2,8 +2,11 @@
 
 namespace AuctionLeague.Data.Slack
 {
-    public class SlackAuctionData : AuctionData
+    public class SlackAuctionData
     {
         public string Channel { get; set; }
+        public string BidderUserId { get; set; }
+        public int Bid { get; set; }
+        public AuctionPlayer Player { get; set; }
     }
 }

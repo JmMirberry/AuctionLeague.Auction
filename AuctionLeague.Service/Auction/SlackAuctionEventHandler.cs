@@ -33,21 +33,28 @@ namespace AuctionLeague.Service.Auction
             var sold = _dataStore.Data.Bid > 0;
             var initialMessage = sold ? "Sold!" : "Not sold";
             await SendMessage(initialMessage);
-            
-            var displayName = (await _slackClient.Users.Info(_dataStore.Data.Bidder)).Name;
-            await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.LastName} sold to {displayName} for {_dataStore.Data.Bid}");
 
-            if (!sold) return;
-
-            var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName);
-            
-            if (result.IsSuccess)
+            try
             {
-                await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {displayName} for {_dataStore.Data.Bid}");
+                var displayName = (await _slackClient.Users.Info(_dataStore.Data.BidderUserId)).Name;
+
+                if (!sold) return;
+
+                var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName);
+
+                if (result.IsSuccess)
+                {
+                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {displayName} for {_dataStore.Data.Bid}");
+                }
+
+                await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {displayName}. {result.Errors}");
+                _dataStore.Data = new SlackAuctionData();
+            }
+            catch (Exception e) 
+            {
+                await SendMessage(e.ToString());
             }
             
-            await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {displayName}. {result.Errors}");
-            _dataStore.Data = new SlackAuctionData();
         }
 
         private async Task SendMessage(string message)

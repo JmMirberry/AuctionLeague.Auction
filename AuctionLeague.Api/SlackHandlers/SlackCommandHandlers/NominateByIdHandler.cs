@@ -28,7 +28,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 };
             }
 
-            var result = await _slackAuctionService.NominateById(id, command.UserName, 1, command.ChannelName);
+            var result = await _slackAuctionService.NominateById(id, command.UserId, 1, command.ChannelName);
 
             if (result.IsFailed)
             {

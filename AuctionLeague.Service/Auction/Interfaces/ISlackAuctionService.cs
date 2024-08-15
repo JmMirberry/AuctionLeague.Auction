@@ -9,8 +9,8 @@ namespace AuctionLeague.Service.Auction.Interfaces
         Result<AuctionPlayer> CheckNominatedPlayer();
         Result<string> StartAuction();
         void EndAuction();
-        Task<Result<AuctionPlayer>> NominateById(int playerId, string bidder, int? bid, string channel);
-        Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch, string bidder, string channel);
+        Task<Result<AuctionPlayer>> NominateById(int playerId, string bidderId, int? bid, string channel);
+        Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch, string bidderId, string channel);
         void SubmitBid(int bid, string bidder);
     }
 }

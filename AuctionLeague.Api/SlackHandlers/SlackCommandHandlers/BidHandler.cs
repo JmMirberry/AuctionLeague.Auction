@@ -63,13 +63,13 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 {
                     Message = new Message
                     {
-                        Text = $"Bid must be greater than {currentBid.Bid} bid by {currentBid.Bidder}",
+                        Text = $"Bid must be greater than current high bid of {currentBid.Bid} ",
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
             }
             
-            _auctionManager.BidMade(bid, command.UserName);
+            _auctionManager.BidMade(bid, command.UserId);
 
             return new SlashCommandResponse
             {
