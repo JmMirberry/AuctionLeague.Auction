@@ -1,5 +1,4 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
-using SlackNet;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
@@ -10,9 +9,8 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
     {
         public const string SlashCommand = "/nominatebyname";
         private readonly ISlackAuctionService _slackAuctionService;
-        private readonly ISlackApiClient _slackClient;
 
-        public NominateByNameHandler(ISlackAuctionService slackAuctionService, ISlackApiClient slackApiClient)
+        public NominateByNameHandler(ISlackAuctionService slackAuctionService)
         {
             _slackAuctionService = slackAuctionService;
         }
