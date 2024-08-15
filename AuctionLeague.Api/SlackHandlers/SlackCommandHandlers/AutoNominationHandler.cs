@@ -8,7 +8,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 {
     public class AutoNominationHandler : ISlashCommandHandler
     {
-        public const string SlashCommand = "/autoNominate";
+        public const string SlashCommand = "/autonominate";
         private readonly IAutoNominationService _service;
         private readonly ISlackAuctionService _slackAuctionService;
 
