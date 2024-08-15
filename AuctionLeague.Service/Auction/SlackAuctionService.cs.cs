@@ -1,8 +1,5 @@
-﻿using Amazon.Runtime.Internal;
-using AuctionLeague.Data.Auction;
-using AuctionLeague.Data.FplPlayer;
+﻿using AuctionLeague.Data.Auction;
 using AuctionLeague.Service.Auction.Interfaces;
-using AuctionLeague.Service.Interfaces;
 using FluentResults;
 using SlackNet;
 
@@ -12,12 +9,14 @@ namespace AuctionLeague.Service.Auction
     {
         private readonly ISlackAuctionManager _auctionManager;
         private readonly IAuctionNominationService _nominationService;
+        private readonly ISlackApiClient _slackClient;
 
-        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService)
+
+        public SlackAuctionService(ISlackAuctionManager auctionManager, IAuctionNominationService nominationService, ISlackApiClient slackClient)
         {
             _auctionManager = auctionManager;
             _nominationService = nominationService;
-            
+            _slackClient = slackClient;
         }
 
         public Result<string> StartAuction()
@@ -79,10 +78,11 @@ namespace AuctionLeague.Service.Auction
             return Result.Ok<AuctionPlayer>(player);
         }
 
-        public Result<string> CheckCurrentBid()
+        public async Task<Result<string>> CheckCurrentBid()
         {
             var bid = _auctionManager.CurrentBid();
-            return Result.Ok($"Current bid is {bid.Bid} by {bid.Bidder}");
+            var bidder = (await _slackClient.Users.Info(bid.BidderUserId)).Name;
+            return Result.Ok($"Current bid is {bid.Bid} by {bidder}");
         }
     }
 }

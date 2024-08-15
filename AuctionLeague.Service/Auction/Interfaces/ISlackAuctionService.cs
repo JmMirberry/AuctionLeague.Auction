@@ -5,7 +5,7 @@ namespace AuctionLeague.Service.Auction.Interfaces
 {
     public interface ISlackAuctionService
     {
-        Result<string> CheckCurrentBid();
+        Task<Result<string>> CheckCurrentBid();
         Result<AuctionPlayer> CheckNominatedPlayer();
         Result<string> StartAuction();
         void EndAuction();
