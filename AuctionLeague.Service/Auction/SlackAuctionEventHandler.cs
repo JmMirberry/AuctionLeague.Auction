@@ -44,7 +44,7 @@ namespace AuctionLeague.Service.Auction
 
                 if (result.IsSuccess)
                 {
-                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {displayName} for {_dataStore.Data.Bid}");
+                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {result.Value.SoldTo} for {_dataStore.Data.Bid}");
                 }
 
                 await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {displayName}. {result.Errors}");
