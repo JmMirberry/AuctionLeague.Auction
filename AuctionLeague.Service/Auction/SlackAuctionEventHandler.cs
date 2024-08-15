@@ -36,7 +36,7 @@ namespace AuctionLeague.Service.Auction
 
             try
             {
-                var displayName = (await _slackClient.Users.Info(_dataStore.Data.BidderUserId)).Name;
+                var displayName = (await _slackClient.Users.Info(_dataStore.Data.BidderUserId)).RealName;
 
                 if (!sold) return;
 
@@ -46,15 +46,16 @@ namespace AuctionLeague.Service.Auction
                 {
                     await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} sold to {result.Value.SoldTo} for {_dataStore.Data.Bid}");
                 }
-
-                await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {displayName}. {result.Errors}");
+                else
+                {
+                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.FirstName} cannot be sold to {displayName}. {result.Errors}");
+                }
                 _dataStore.Data = new SlackAuctionData();
             }
             catch (Exception e) 
             {
                 await SendMessage(e.ToString());
             }
-            
         }
 
         private async Task SendMessage(string message)
