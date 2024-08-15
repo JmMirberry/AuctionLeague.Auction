@@ -17,6 +17,18 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
+            if (!_auctionManager.AuctionLive())
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = $"There is no live auction",
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
+
             if (!int.TryParse(command.Text, out var bid))
             {
                 return new SlashCommandResponse

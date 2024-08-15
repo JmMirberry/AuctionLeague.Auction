@@ -64,13 +64,16 @@ namespace AuctionLeague.Service.Auction
         {   
             _timer.ResetTimer(); 
             ResetData();
-        } 
-        
+        }
+
         public void BidMade(int bid, string bidder)
-        {     
-            _timer.RestartTimer(); 
-            _dataStore.Data.Bid = bid;
-            _dataStore.Data.BidderUserId = bidder;  
+        {
+            if (AuctionLive())
+            {
+                _timer.RestartTimer();
+                _dataStore.Data.Bid = bid;
+                _dataStore.Data.BidderUserId = bidder;
+            }
         } 
         
         private void ResetData() 
