@@ -14,19 +14,33 @@ namespace SlackAPI.Handlers
         {
             _slackAuctionService = slackAuctionService;
         }
-        
-        public Task<SlashCommandResponse> Handle(SlashCommand command)
-        {
-            var result = _slackAuctionService.StartAuction();
 
-            return Task.FromResult( new SlashCommandResponse
+        public async Task<SlashCommandResponse> Handle(SlashCommand command)
+        {
+            try
             {
-                Message = new Message
+                var result = _slackAuctionService.StartAuction();
+
+                return new SlashCommandResponse
                 {
-                    Text =  result.IsSuccess ? result.Value : result.Errors[0].Message
-                },
-                ResponseType = ResponseType.InChannel
-            });
+                    Message = new Message
+                    {
+                        Text = result.IsSuccess ? result.Value : result.Errors[0].Message
+                    },
+                    ResponseType = ResponseType.InChannel
+                };
+            }
+            catch (Exception e)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = e.ToString(),
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
         }
     }
 }

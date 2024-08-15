@@ -18,15 +18,17 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            var result = await _slackAuctionService.NominateByName(command.Text, command.UserId, command.ChannelName);
-
-            return new SlashCommandResponse
+            try
             {
-                Message = new Message
+                var result = await _slackAuctionService.NominateByName(command.Text, command.UserId, command.ChannelName);
+
+                return new SlashCommandResponse
                 {
-                    //Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
-                    Channel = command.ChannelName,
-                    Blocks =
+                    Message = new Message
+                    {
+                        //Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
+                        Channel = command.ChannelName,
+                        Blocks =
                     {
                         new SectionBlock
                         {
@@ -43,9 +45,21 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                             }
                         }
                     }
-                },
-                ResponseType = ResponseType.InChannel
-            };
+                    },
+                    ResponseType = ResponseType.InChannel
+                };
+            }
+            catch (Exception e)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = e.ToString(),
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
         }
     }
 }

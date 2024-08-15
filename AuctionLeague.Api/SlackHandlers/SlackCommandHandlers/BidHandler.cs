@@ -9,84 +9,99 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         public const string SlashCommand = "/bid";
 
         private readonly ISlackAuctionManager _auctionManager;
-        
+
         public BidHandler(ISlackAuctionManager auctionManager)
         {
             _auctionManager = auctionManager;
         }
-        
+
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            if (!_auctionManager.AuctionLive())
+            try
             {
-                return new SlashCommandResponse
+                if (!_auctionManager.AuctionLive())
                 {
-                    Message = new Message
+                    return new SlashCommandResponse
                     {
-                        Text = $"There is no live auction",
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
+                        Message = new Message
+                        {
+                            Text = $"There is no live auction",
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
 
-            if (!int.TryParse(command.Text, out var bid))
-            {
-                return new SlashCommandResponse
+                if (!int.TryParse(command.Text, out var bid))
                 {
-                    Message = new Message
+                    return new SlashCommandResponse
                     {
-                        Text = "Bids must be integers",
-                        
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
-            
-            if (bid < 0)
-            {
-                return new SlashCommandResponse
-                {
-                    Message = new Message
-                    {
-                        Text = "Bids must be > 0",
-                        
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
-            
-            if (bid > 90)
-            {
-                return new SlashCommandResponse
-                {
-                    Message = new Message
-                    {
-                        Text = "Bids must be < 91",
-                        
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
+                        Message = new Message
+                        {
+                            Text = "Bids must be integers",
 
-            var currentBid = _auctionManager.CurrentBid();
-            if (bid <= currentBid.Bid)
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
+                if (bid < 0)
+                {
+                    return new SlashCommandResponse
+                    {
+                        Message = new Message
+                        {
+                            Text = "Bids must be > 0",
+
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
+                if (bid > 90)
+                {
+                    return new SlashCommandResponse
+                    {
+                        Message = new Message
+                        {
+                            Text = "Bids must be < 91",
+
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
+                var currentBid = _auctionManager.CurrentBid();
+                if (bid <= currentBid.Bid)
+                {
+                    return new SlashCommandResponse
+                    {
+                        Message = new Message
+                        {
+                            Text = $"Bid must be greater than current high bid of {currentBid.Bid} ",
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
+                _auctionManager.BidMade(bid, command.UserId);
+
+                return new SlashCommandResponse
+                {
+                    ResponseType = ResponseType.InChannel // simple response means that only the command shows
+                };
+            }
+            catch (Exception e)
             {
                 return new SlashCommandResponse
                 {
                     Message = new Message
                     {
-                        Text = $"Bid must be greater than current high bid of {currentBid.Bid} ",
+                        Text = e.ToString(),
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
             }
-            
-            _auctionManager.BidMade(bid, command.UserId);
-
-            return new SlashCommandResponse
-            {
-                ResponseType = ResponseType.InChannel // simple response means that only the command shows
-            };
         }
+
     }
 }

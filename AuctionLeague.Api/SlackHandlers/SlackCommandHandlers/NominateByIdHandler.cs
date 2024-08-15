@@ -1,4 +1,5 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
+using FluentResults;
 using SlackNet;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
@@ -18,38 +19,40 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
-            if (!int.TryParse(command.Text, out var id))
+            try
             {
+                if (!int.TryParse(command.Text, out var id))
+                {
+                    return new SlashCommandResponse
+                    {
+                        Message = new Message
+                        {
+                            Text = "Invalid player Id",
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
+                var result = await _slackAuctionService.NominateById(id, command.UserId, 1, command.ChannelName);
+
+                if (result.IsFailed)
+                {
+                    return new SlashCommandResponse
+                    {
+                        Message = new Message
+                        {
+                            Text = result.Errors[0].Message,
+                        },
+                        ResponseType = ResponseType.Ephemeral
+                    };
+                }
+
                 return new SlashCommandResponse
                 {
                     Message = new Message
                     {
-                        Text = "Invalid player Id",
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
-
-            var result = await _slackAuctionService.NominateById(id, command.UserId, 1, command.ChannelName);
-
-            if (result.IsFailed)
-            {
-                return new SlashCommandResponse
-                {
-                    Message = new Message
-                    {
-                        Text = result.Errors[0].Message,
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
-            }
-
-            return new SlashCommandResponse
-            {
-                Message = new Message
-                {
-                    Channel = command.ChannelName,
-                    Blocks =
+                        Channel = command.ChannelName,
+                        Blocks =
                     {
                         new SectionBlock
                         {
@@ -66,9 +69,21 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                                 }
                         }
                     }
-                },
-                ResponseType = ResponseType.InChannel
-            };
+                    },
+                    ResponseType = ResponseType.InChannel
+                };
+            }
+            catch (Exception e)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = e.ToString(),
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
         }
     }
 }
