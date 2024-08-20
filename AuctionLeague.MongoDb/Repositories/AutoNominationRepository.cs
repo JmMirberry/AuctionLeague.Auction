@@ -25,6 +25,7 @@ namespace AuctionLeague.MongoDb.Repositories
         public async Task AddAutoNominationsAsync(IEnumerable<(int round, List<AuctionPlayer> players)> autoNominations) =>
             await _collection.InsertManyAsync(autoNominations.Select(e => new AutoNominationEntity
             {
+                _id = e.round
                 Round = e.round,
                 Players = e.players.Select(x => x.ToAutoNominatedEntity()).ToList()
             }));
