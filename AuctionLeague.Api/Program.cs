@@ -16,6 +16,7 @@ using AuctionLeague.SlackHandlers.SlackCommandHandlers;
 using SlackAPI.Handlers;
 using SlackAPI.Models;
 using SlackNet.AspNetCore;
+using SlackNet.Events;
 
 namespace AuctionLeague;
 
@@ -47,7 +48,7 @@ public class Program
 
         builder.Services.AddSlackNet(c => c
             .UseApiToken(accessToken)
-            //.RegisterEventHandler<MessageEvent, SlackMessageHandler>()
+            .RegisterEventHandler<MessageEvent, SlackMessageHandler>()
             .RegisterSlashCommandHandler<EchoDemo>(EchoDemo.SlashCommand)
             .RegisterSlashCommandHandler<BeginAuctionHandler>(BeginAuctionHandler.SlashCommand)
             .RegisterSlashCommandHandler<KillAuctionHandler>(KillAuctionHandler.SlashCommand)
