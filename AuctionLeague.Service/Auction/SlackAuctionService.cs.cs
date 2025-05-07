@@ -29,7 +29,7 @@ namespace AuctionLeague.Service.Auction
                 return Result.Fail(result.Errors[0].Message.ToString());
             }
 
-            return Result.Ok($"Auction started for {result.Value.FirstName} {result.Value.FirstName}");
+            return Result.Ok($"Auction started for {result.Value.FirstName} {result.Value.LastName}");
         }
 
         public void EndAuction()
