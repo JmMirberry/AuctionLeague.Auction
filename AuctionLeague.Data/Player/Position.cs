@@ -6,5 +6,6 @@ public enum Position
     GKP,
     DEF,
     MID,
-    FWD
+    FWD,
+    MNG
 }
