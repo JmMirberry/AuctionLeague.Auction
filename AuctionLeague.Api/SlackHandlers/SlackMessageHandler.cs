@@ -1,4 +1,5 @@
 ﻿using AuctionLeague.Service.Auction.Interfaces;
+using Newtonsoft.Json;
 using SlackNet;
 using SlackNet.Events;
 
@@ -19,6 +20,20 @@ namespace SlackAPI.Handlers
 
         public async Task Handle(MessageEvent slackEvent)
         {
+            if (slackEvent.Text == "123")
+            {
+                await _slack.Chat.PostMessage(new Message
+                {
+                    Text = JsonConvert.SerializeObject(slackEvent),
+                    Channel = slackEvent.Channel
+                });
+            }
+            else
+            {
+                return;
+            }
+
+
             if (slackEvent.Subtype == "bot_message") return;
             if (!_auctionManager.AuctionLive()) return;
 
