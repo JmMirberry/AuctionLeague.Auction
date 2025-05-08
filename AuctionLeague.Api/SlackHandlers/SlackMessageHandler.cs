@@ -20,7 +20,7 @@ namespace SlackAPI.Handlers
 
         public async Task Handle(MessageEvent slackEvent)
         {
-            if (slackEvent.ExtraProperties.ContainsKey("bot_id")) return;
+            if (slackEvent.ExtraProperties.ContainsKey("bot_id") || slackEvent.ExtraProperties.ContainsKey("app_id")) return;
                 
             if (!_auctionManager.AuctionLive()) return;
 

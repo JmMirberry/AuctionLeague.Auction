@@ -24,18 +24,14 @@ namespace SlackAPI.Handlers
                 var result = _slackAuctionService.StartAuction();
                 var slackMessage = new SlackNet.WebApi.Message()
                 {
-                    Text = "Test",
+                    Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
                     Channel = command.ChannelId
                 };
 
                 await _slackClient.Chat.PostMessage(slackMessage, null);
                 return new SlashCommandResponse
                 {
-                    Message = new Message
-                    {
-                        Text = result.IsSuccess ? result.Value : result.Errors[0].Message
-                    },
-                    ResponseType = ResponseType.InChannel
+                    ResponseType = ResponseType.Ephemeral
                 };
             }
             catch (Exception e)
