@@ -20,16 +20,8 @@ namespace SlackAPI.Handlers
 
         public async Task Handle(MessageEvent slackEvent)
         {
-            
-                await _slack.Chat.PostMessage(new Message
-                {
-                    Text = JsonConvert.SerializeObject(slackEvent.ExtraProperties),
-                    Channel = slackEvent.Channel
-                });
-            return;
-
-
-            if (slackEvent.Subtype == "bot_message") return;
+            if (slackEvent.ExtraProperties.ContainsKey("bot_id")) return;
+                
             if (!_auctionManager.AuctionLive()) return;
 
             if (!int.TryParse(slackEvent.Text, out var bid))
