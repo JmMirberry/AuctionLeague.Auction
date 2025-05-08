@@ -81,7 +81,7 @@ namespace AuctionLeague.SaleService
 
             if (saleValidationResult.IsFailed)
             {
-                return Result.Fail(saleValidationResult.Errors);
+                return saleValidationResult;
             }
 
             await _auctionTeamsRepository.AddPlayerToAuctionTeamAsync(team.TeamName, soldPlayer);
@@ -95,7 +95,7 @@ namespace AuctionLeague.SaleService
                 LastName = soldPlayer.LastName,
                 SalePrice = soldPlayer.SalePrice,
                 SoldTo = team.TeamName
-            }; ;
+            };
         }
 
         private async Task<AuctionTeam> GetAuctionTeamByBidder(string bidder)

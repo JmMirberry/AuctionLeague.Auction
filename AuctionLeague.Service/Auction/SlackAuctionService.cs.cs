@@ -2,6 +2,7 @@
 using AuctionLeague.Service.Auction.Interfaces;
 using FluentResults;
 using SlackNet;
+using System.Security.Cryptography;
 
 namespace AuctionLeague.Service.Auction
 {
@@ -42,28 +43,18 @@ namespace AuctionLeague.Service.Auction
             _auctionManager.BidMade(bid, bidderId);
         }
 
-        public async Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch, string bidder, string channel)
+        public async Task<AuctionPlayer> NominateByName(string lastNameSearch, string bidder, string channel)
         {
-            var nominationSearchResult = await _nominationService.NominateByName(lastNameSearch);
-            return NominatePlayer(nominationSearchResult.Value, bidder, 1, channel);
+            var player = await _nominationService.NominateByName(lastNameSearch);
+            _auctionManager.NominatePlayer(player, bidder, 1, channel);
+            return player;
         }
 
-        public async Task<Result<AuctionPlayer>> NominateById(int playerId, string bidder, int? bid, string channel)
+        public async Task<AuctionPlayer> NominateById(int playerId, string bidder, int? bid, string channel)
         {
-            var nominationSearchResult = await _nominationService.NominateById(playerId);
-            return NominatePlayer(nominationSearchResult.Value, bidder, bid, channel);
-        }
-
-        private Result<AuctionPlayer> NominatePlayer(Result<AuctionPlayer> playerSearchResult, string bidder, int? bid, string channel)
-        {
-            if (playerSearchResult.IsFailed)
-            {
-                return Result.Fail(playerSearchResult.Errors.ToString());
-            }
-
-            _auctionManager.NominatePlayer(playerSearchResult.Value, bidder, bid, channel);
-
-            return Result.Ok(playerSearchResult.Value);
+            var player = await _nominationService.NominateById(playerId);
+            _auctionManager.NominatePlayer(player, bidder, bid, channel);
+            return player;
         }
 
         public Result<AuctionPlayer> CheckNominatedPlayer()

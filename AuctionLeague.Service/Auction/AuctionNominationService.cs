@@ -15,41 +15,41 @@ public class AuctionNominationService : IAuctionNominationService
         _playerRepository = playerRepository;
     }
 
-    public async Task<Result<AuctionPlayer>> NominateByName(string lastNameSearch)
+    public async Task<AuctionPlayer> NominateByName(string lastNameSearch)
     {
         var playerMatches = (await _playerRepository.GetPlayerAsync(lastNameSearch)).ToList();
         if (!playerMatches.Any())
         {
-            return Result.Fail($"No player found with last name matching {lastNameSearch}");
+            throw new PlayerNotFoundException($"No player found with last name matching {lastNameSearch}");
         }
         if (playerMatches.Count > 1)
         {
-            return Result.Fail($"Multiple players matched");
+            throw new PlayerNotFoundException("Multiple players matched");
         }
 
         var player = playerMatches[0];
 
         if (player.IsSold)
         {
-            return Result.Fail($"Player is has already been sold");
+            throw new PlayerUnavailableException("Player is has already been sold");
         }
-        return Result.Ok(playerMatches[0]);
+        return playerMatches[0];
     }
 
-    public async Task<Result<AuctionPlayer>> NominateById(int playerId)
+    public async Task<AuctionPlayer> NominateById(int playerId)
     {
         var player = await _playerRepository.GetPlayerAsync(playerId);
 
         if (player == null )
         {
-            return Result.Fail($"No player found with id {playerId}");
+            throw new PlayerNotFoundException($"No player found with id {playerId}");
         }
 
         if (player.IsSold)
         {
-            return Result.Fail($"Player is has already been sold");
+            throw new PlayerUnavailableException($"Player is has already been sold");
         }
 
-        return Result.Ok(player);
+        return player;
     }
 }

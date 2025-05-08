@@ -25,7 +25,6 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 {
                     Message = new Message
                     {
-                        //Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
                         Channel = command.ChannelName,
                         Blocks =
                     {

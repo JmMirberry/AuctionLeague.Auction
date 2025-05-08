@@ -48,13 +48,13 @@ namespace AuctionLeague.Service.Auction
                 }
                 else
                 {
-                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.LastName} cannot be sold to {displayName}. {result.Errors}");
+                    await SendMessage($"{_dataStore.Data.Player.FirstName} {_dataStore.Data.Player.LastName} cannot be sold to {displayName}. {result.Errors[0]}");
                 }
                 _dataStore.Data = new SlackAuctionData();
             }
             catch (Exception e) 
             {
-                await SendMessage(e.ToString());
+                await SendMessage(e.Message.ToString());
             }
         }
 
