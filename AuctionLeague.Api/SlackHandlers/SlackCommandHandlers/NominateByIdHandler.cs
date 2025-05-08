@@ -1,5 +1,6 @@
 ﻿using AuctionLeague.Service.Auction;
 using AuctionLeague.Service.Auction.Interfaces;
+using SlackNet;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
@@ -10,10 +11,12 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
     {
         public const string SlashCommand = "/nominatebyid";
         private readonly ISlackAuctionService _slackAuctionService;
+        private readonly ISlackApiClient _slackClient;
 
-        public NominateByIdHandler(ISlackAuctionService slackAuctionService)
+        public NominateByIdHandler(ISlackAuctionService slackAuctionService, ISlackApiClient slackClient)
         {
             _slackAuctionService = slackAuctionService;
+            _slackClient = slackClient;
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
@@ -33,12 +36,10 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 
                 var result = await _slackAuctionService.NominateById(id, command.UserId, 1, command.ChannelName);
 
-                return new SlashCommandResponse
+                var slackMessage = new Message
                 {
-                    Message = new Message
-                    {
-                        Channel = command.ChannelName,
-                        Blocks =
+                    Channel = command.ChannelName,
+                    Blocks =
                     {
                         new SectionBlock
                         {
@@ -52,11 +53,20 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                                 new Markdown($"*Club:*\n{result.Team}"),
                                 new Markdown($"*FPL Value*\n{result.Value}"),
                                 new Markdown($"*FPL Points*\n{result.TotalPointsPreviousYear}"),
-                                }
+                            }
                         }
                     }
+                };
+
+                await _slackClient.Chat.PostMessage(slackMessage, null);
+
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = "Searching..."
                     },
-                    ResponseType = ResponseType.InChannel
+                    ResponseType = ResponseType.Ephemeral
                 };
             }
             catch (PlayerNotFoundException e)

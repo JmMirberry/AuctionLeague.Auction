@@ -33,7 +33,7 @@ namespace SlackAPI.Handlers
                 {
                     Message = new Message
                     {
-                        Text = ""
+                        Text = "Starting auction"
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
