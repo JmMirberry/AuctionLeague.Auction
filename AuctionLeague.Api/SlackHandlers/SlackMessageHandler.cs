@@ -23,7 +23,7 @@ namespace SlackAPI.Handlers
             
                 await _slack.Chat.PostMessage(new Message
                 {
-                    Text = JsonConvert.SerializeObject(slackEvent),
+                    Text = JsonConvert.SerializeObject(slackEvent.ExtraProperties),
                     Channel = slackEvent.Channel
                 });
             return;
