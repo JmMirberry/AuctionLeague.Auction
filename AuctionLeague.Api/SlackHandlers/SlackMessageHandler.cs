@@ -20,18 +20,13 @@ namespace SlackAPI.Handlers
 
         public async Task Handle(MessageEvent slackEvent)
         {
-            if (slackEvent.Text == "123")
-            {
+            
                 await _slack.Chat.PostMessage(new Message
                 {
                     Text = JsonConvert.SerializeObject(slackEvent),
                     Channel = slackEvent.Channel
                 });
-            }
-            else
-            {
-                return;
-            }
+            return;
 
 
             if (slackEvent.Subtype == "bot_message") return;
