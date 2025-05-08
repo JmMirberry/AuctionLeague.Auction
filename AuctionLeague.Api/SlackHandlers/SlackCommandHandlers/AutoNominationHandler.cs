@@ -35,19 +35,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     };
                 }
 
-                var nominatedPlayerResult = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0, command.ChannelName);
-
-                if (nominatedPlayerResult.IsFailed)
-                {
-                    return new SlashCommandResponse
-                    {
-                        Message = new Message
-                        {
-                            Text = nominatedPlayerResult.Errors[0].Message,
-                        },
-                        ResponseType = ResponseType.Ephemeral
-                    };
-                }
+                var nominatedPlayer = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0, command.ChannelName);
 
                 return new SlashCommandResponse
                 {
@@ -58,16 +46,16 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     {
                         new SectionBlock
                         {
-                            Text = new Markdown($"*{nominatedPlayerResult.Value.PlayerId} - {nominatedPlayerResult.Value.FirstName} {nominatedPlayerResult.Value.LastName}*"),
+                            Text = new Markdown($"*{nominatedPlayer.PlayerId} - {nominatedPlayer.FirstName} {nominatedPlayer.LastName}*"),
                         },
                         new SectionBlock
                         {
                             Fields = new List<TextObject>
                             {
-                                new Markdown($"*Position:*\n{nominatedPlayerResult.Value.Position}"),
-                                new Markdown($"*Club:*\n{nominatedPlayerResult.Value.Team}"),
-                                new Markdown($"*FPL Value*\n{nominatedPlayerResult.Value.Value}"),
-                                new Markdown($"*FPL Points*\n{nominatedPlayerResult.Value.TotalPointsPreviousYear}"),
+                                new Markdown($"*Position:*\n{nominatedPlayer.Position}"),
+                                new Markdown($"*Club:*\n{nominatedPlayer.Team}"),
+                                new Markdown($"*FPL Value*\n{nominatedPlayer.Value}"),
+                                new Markdown($"*FPL Points*\n{nominatedPlayer.TotalPointsPreviousYear}"),
                                 }
                         }
                     }
