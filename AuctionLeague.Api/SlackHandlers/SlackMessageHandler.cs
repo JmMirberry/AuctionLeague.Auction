@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using SlackNet;
 using SlackNet.Events;
-
 using SlackNet.WebApi;
 
 namespace SlackAPI.Handlers
@@ -31,6 +30,7 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be integers",
                     Channel = slackEvent.Channel
                 });
+                return;
             }
 
             if (bid <= 1)
@@ -40,6 +40,7 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be > 1",
                     Channel = slackEvent.Channel
                 });
+                return;
             }
 
             if (bid >= 91)
@@ -49,6 +50,18 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be < 91",
                     Channel = slackEvent.Channel
                 });
+                return;
+            }
+
+            var currentBid = _auctionManager.CurrentBid();
+            if (bid <= currentBid.Bid)
+            {
+                await _slack.Chat.PostMessage(new Message
+                {
+                    Text = $"Bid must be greater than current high bid of {currentBid.Bid}",
+                    Channel = slackEvent.Channel
+                });
+                return;
             }
 
             _auctionManager.BidMade(bid, slackEvent.User);
