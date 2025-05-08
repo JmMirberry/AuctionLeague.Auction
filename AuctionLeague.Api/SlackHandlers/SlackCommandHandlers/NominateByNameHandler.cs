@@ -1,4 +1,5 @@
-﻿using AuctionLeague.Service.Auction.Interfaces;
+﻿using AuctionLeague.Service.Auction;
+using AuctionLeague.Service.Auction.Interfaces;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
@@ -30,21 +31,43 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     {
                         new SectionBlock
                         {
-                            Text = new Markdown($"*{result.Value.PlayerId} - {result.Value.FirstName} {result.Value.LastName}*"),
+                            Text = new Markdown($"*{result.PlayerId} - {result.FirstName} {result.LastName}*"),
                         },
                         new SectionBlock
                         {
                             Fields = new List<TextObject>
                             {
-                                new Markdown($"*Position:*\n{result.Value.Position}"),
-                                new Markdown($"*Club:*\n{result.Value.Team}"),
-                                new Markdown($"*FPL Value*\n${result.Value.Value}"),
-                                new Markdown($"*FPL Points*\n${result.Value.TotalPointsPreviousYear}"),
+                                new Markdown($"*Position:*\n{result.Position}"),
+                                new Markdown($"*Club:*\n{result.Team}"),
+                                new Markdown($"*FPL Value*\n${result.Value}"),
+                                new Markdown($"*FPL Points*\n${result.TotalPointsPreviousYear}"),
                             }
                         }
                     }
                     },
                     ResponseType = ResponseType.InChannel
+                };
+            }
+            catch (PlayerNotFoundException e)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = e.Message.ToString(),
+                    },
+                    ResponseType = ResponseType.Ephemeral
+                };
+            }
+            catch (PlayerUnavailableException e)
+            {
+                return new SlashCommandResponse
+                {
+                    Message = new Message
+                    {
+                        Text = e.Message.ToString(),
+                    },
+                    ResponseType = ResponseType.Ephemeral
                 };
             }
             catch (Exception e)

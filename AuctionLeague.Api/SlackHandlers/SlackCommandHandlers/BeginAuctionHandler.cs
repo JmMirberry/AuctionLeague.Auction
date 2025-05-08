@@ -22,7 +22,7 @@ namespace SlackAPI.Handlers
             try
             {
                 var result = _slackAuctionService.StartAuction();
-                var slackMessage = new SlackNet.WebApi.Message()
+                var slackMessage = new Message()
                 {
                     Text = result.IsSuccess ? result.Value : result.Errors[0].Message,
                     Channel = command.ChannelId
@@ -31,6 +31,10 @@ namespace SlackAPI.Handlers
                 await _slackClient.Chat.PostMessage(slackMessage, null);
                 return new SlashCommandResponse
                 {
+                    Message = new Message
+                    {
+                        Text = ""
+                    },
                     ResponseType = ResponseType.Ephemeral
                 };
             }
