@@ -33,12 +33,10 @@ namespace AuctionLeague.Service.Auction
             var sold = _dataStore.Data.Bid > 0;
             var initialMessage = sold ? "Sold!" : "Not sold";
             await SendMessage(initialMessage);
-
+            if (!sold) return;
             try
             {
                 var displayName = (await _slackClient.Users.Info(_dataStore.Data.BidderUserId)).RealName;
-
-                if (!sold) return;
 
                 var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName);
 
