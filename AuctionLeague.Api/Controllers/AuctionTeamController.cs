@@ -87,15 +87,8 @@ namespace AuctionLeague.Controllers
         
         [HttpDelete]
         [Route("/remove-all-players")]
-        public async Task<IActionResult> DeletePlayersFromAllTeams(string auctionTeamName)
+        public async Task<IActionResult> DeletePlayersFromAllTeams()
         {
-            var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
-
-            if (auctionTeam is null)
-            {
-                return NotFound();
-            }
-
             await _auctionTeamsRepository.RemovePlayersFromAllAuctionTeams();
 
             return NoContent();
