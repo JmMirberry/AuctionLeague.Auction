@@ -1,5 +1,6 @@
-﻿using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.Interfaces;
+using SlackNet;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
@@ -11,11 +12,13 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         public const string SlashCommand = "/autonominate";
         private readonly IAutoNominationService _service;
         private readonly ISlackAuctionService _slackAuctionService;
+        private readonly ISlackApiClient _slackClient;
 
-        public AutoNominationHandler(IAutoNominationService service, ISlackAuctionService slackAuctionService)
+        public AutoNominationHandler(IAutoNominationService service, ISlackAuctionService slackAuctionService, ISlackApiClient slackClient)
         {
             _service = service;
             _slackAuctionService = slackAuctionService;
+            _slackClient = slackClient;
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
@@ -37,12 +40,10 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 
                 var nominatedPlayer = await _slackAuctionService.NominateById(result.Value.PlayerId, null, 0, command.ChannelName);
 
-                return new SlashCommandResponse
+                var slackMessage = new Message
                 {
-                    Message = new Message
-                    {
-                        Channel = command.ChannelName,
-                        Blocks =
+                    Channel = command.ChannelName,
+                    Blocks =
                     {
                         new SectionBlock
                         {
@@ -56,12 +57,14 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                                 new Markdown($"*Club:*\n{nominatedPlayer.Team}"),
                                 new Markdown($"*FPL Value*\n{nominatedPlayer.Value}"),
                                 new Markdown($"*FPL Points*\n{nominatedPlayer.TotalPointsPreviousYear}"),
-                                }
+                            }
                         }
                     }
-                    },
-                    ResponseType = ResponseType.InChannel
                 };
+
+                await _slackClient.Chat.PostMessage(slackMessage, null);
+                
+                return new SlashCommandResponse();
             }
             catch (Exception e)
             {
