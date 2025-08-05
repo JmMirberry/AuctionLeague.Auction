@@ -51,13 +51,13 @@ namespace AuctionLeague.MongoDb.Repositories
 
         public async Task RemovePlayersFromAuctionTeamAsync(string teamName)
         {
-            var players = Builders<AuctionTeamEntity>.Update.PullAll("Players",  new BsonArray());
+            var players = Builders<AuctionTeamEntity>.Update.Set("Players",  new BsonArray());
             await _auctionTeamsCollection.UpdateOneAsync(x => x.TeamName == teamName, players);
         }
         
         public async Task RemovePlayersFromAllAuctionTeams()
         {
-            var players = Builders<AuctionTeamEntity>.Update.PullAll("Players",  new BsonArray());
+            var players = Builders<AuctionTeamEntity>.Update.Set("Players",  new BsonArray());
             await _auctionTeamsCollection.UpdateManyAsync(_ => true, players);
         }
 
