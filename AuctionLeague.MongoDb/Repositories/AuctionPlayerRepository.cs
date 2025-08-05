@@ -62,7 +62,7 @@ namespace AuctionLeague.MongoDb.Repositories
         {
             var filter = Builders<AuctionPlayerEntity>.Filter.Empty;
             var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsSold, false);
-            await _playersCollection.UpdateOneAsync(filter, update);
+            await _playersCollection.UpdateManyAsync(filter, update);
         }
     }
 }
