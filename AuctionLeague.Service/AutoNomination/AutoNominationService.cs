@@ -50,14 +50,14 @@ public class AutoNominationService : IAutoNominationService
 
     public async Task<Result<AuctionPlayer>> GetAutoNomination()
     {
-        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.players.Count > 0);
+        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.players.Count > 0).ToList();
 
-        if (rounds == null)
+        if (rounds == null|| !rounds.Any())
         {
-            return Result.Fail("All autonominations have been nominated");
+            return Result.Fail("All auto nominations have been nominated");
         }
 
-        var round = rounds.OrderBy(x => x.round).First();
+        var round = rounds.MinBy(x => x.round);
         var players = round.players;
         return await PickAutoNomination(round.round, players);
     }
@@ -66,9 +66,9 @@ public class AutoNominationService : IAutoNominationService
     {
         var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.round == round && x.players.Count > 0)?.ToList();
 
-        if (rounds == null || rounds.Count() == 0)
+        if (rounds == null || !rounds.Any())
         {
-            return Result.Fail("All autonominations have been nominated");
+            return Result.Fail("All auto nominations have been nominated");
         }
 
         var roundData = rounds[0];
