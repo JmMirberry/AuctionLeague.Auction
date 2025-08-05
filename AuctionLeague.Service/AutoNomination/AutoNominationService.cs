@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Data.Auction;
+using AuctionLeague.Data.Auction;
 using AuctionLeague.Data.FplPlayer;
 using AuctionLeague.Data.Settings;
 using AuctionLeague.MongoDb.Abstractions;
@@ -29,17 +29,19 @@ public class AutoNominationService : IAutoNominationService
     private async Task SetAutoNomination(List<AutonominationSettings> settings, IEnumerable<AuctionPlayer> players)
     {
         var autoNominationRounds = new List<(int round, List<AuctionPlayer>)>();
-
+        var unNominatedPlayers = players.ToList();
+        
         foreach (var round in settings)
         {
             var autoNominationPlayers = new List<AuctionPlayer>();
 
-            autoNominationPlayers.AddRange(players.Where(x => x.Position == Position.GKP && x.Value >= round.GkpMinValue));
-            autoNominationPlayers.AddRange(players.Where(x => x.Position == Position.DEF && x.Value >= round.DefMinValue));
-            autoNominationPlayers.AddRange(players.Where(x => x.Position == Position.MID && x.Value >= round.MidMinValue));
-            autoNominationPlayers.AddRange(players.Where(x => x.Position == Position.FWD && x.Value >= round.FwdMinValue));
+            autoNominationPlayers.AddRange(unNominatedPlayers.Where(x => x.Position == Position.GKP && x.Value >= round.GkpMinValue));
+            autoNominationPlayers.AddRange(unNominatedPlayers.Where(x => x.Position == Position.DEF && x.Value >= round.DefMinValue));
+            autoNominationPlayers.AddRange(unNominatedPlayers.Where(x => x.Position == Position.MID && x.Value >= round.MidMinValue));
+            autoNominationPlayers.AddRange(unNominatedPlayers.Where(x => x.Position == Position.FWD && x.Value >= round.FwdMinValue));
 
             autoNominationRounds.Add((round.Round, autoNominationPlayers));
+            unNominatedPlayers = unNominatedPlayers.Where(a => autoNominationPlayers.All(b => b.PlayerId != a.PlayerId)).ToList();
         }
 
         await _nominationRepository.RemoveAllAsync();
