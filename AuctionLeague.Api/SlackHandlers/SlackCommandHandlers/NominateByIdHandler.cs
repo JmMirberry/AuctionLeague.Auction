@@ -60,14 +60,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
 
                 await _slackClient.Chat.PostMessage(slackMessage, null);
 
-                return new SlashCommandResponse
-                {
-                    Message = new Message
-                    {
-                        Text = "Searching..."
-                    },
-                    ResponseType = ResponseType.Ephemeral
-                };
+                return new SlashCommandResponse(); // Empty response does not play anything back
             }
             catch (PlayerNotFoundException e)
             {
