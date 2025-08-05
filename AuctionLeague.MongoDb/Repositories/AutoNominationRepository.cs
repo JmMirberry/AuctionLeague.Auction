@@ -40,7 +40,7 @@ namespace AuctionLeague.MongoDb.Repositories
                 Builders<AutoNominationEntity>.Filter.Eq("Players.PlayerId", playerId)
                 );
 
-            var update = Builders<AutoNominationEntity>.Update.Set(p => p.Players[0].Nominated, true);
+            var update = Builders<AutoNominationEntity>.Update.Set("Players.$.Nominated", true);
             await _collection.UpdateOneAsync(filter, update);
         }
     }
