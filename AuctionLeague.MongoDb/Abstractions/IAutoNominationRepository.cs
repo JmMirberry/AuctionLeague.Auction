@@ -5,7 +5,7 @@ namespace AuctionLeague.MongoDb.Abstractions
     public interface IAutoNominationRepository
     {
         Task AddAutoNominationsAsync(IEnumerable<(int round, List<AuctionPlayer> players)> autoNominations);
-        Task<IEnumerable<(int round, List<AuctionPlayer> player)>> GetAutoNominationsAsync();
+        Task<IEnumerable<(int round, List<AuctionPlayer> players)>> GetAutoNominationsAsync();
         Task RemoveAllAsync();
         Task SetPlayerAsNominated(int round, int playerId);
     }
