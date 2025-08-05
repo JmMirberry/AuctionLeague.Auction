@@ -15,7 +15,7 @@ namespace AuctionLeague.MongoDb.Repositories
             _collection = mongoDatabase.GetCollection<AutoNominationEntity>("AutoNominations");
         }
 
-        public async Task<IEnumerable<(int round, List<AuctionPlayer> player)>> GetAutoNominationsAsync()
+        public async Task<IEnumerable<(int round, List<AuctionPlayer> players)>> GetAutoNominationsAsync()
         {
             var entities =
             await _collection.Find(_ => true).ToListAsync();

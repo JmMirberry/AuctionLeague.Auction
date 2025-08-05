@@ -48,7 +48,7 @@ public class AutoNominationService : IAutoNominationService
 
     public async Task<Result<AuctionPlayer>> GetAutoNomination()
     {
-        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.player.Count > 0);
+        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.players.Count > 0);
 
         if (rounds == null)
         {
@@ -56,13 +56,13 @@ public class AutoNominationService : IAutoNominationService
         }
 
         var round = rounds.OrderBy(x => x.round).First();
-        var players = round.player;
+        var players = round.players;
         return await PickAutoNomination(round.round, players);
     }
 
     public async Task<Result<AuctionPlayer>> GetAutoNominationForRound(int round)
     {
-        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.round == round && x.player.Count > 0)?.ToList();
+        var rounds = (await _nominationRepository.GetAutoNominationsAsync()).Where(x => x.round == round && x.players.Count > 0)?.ToList();
 
         if (rounds == null || rounds.Count() == 0)
         {
@@ -70,7 +70,7 @@ public class AutoNominationService : IAutoNominationService
         }
 
         var roundData = rounds[0];
-        var players = roundData.player;
+        var players = roundData.players;
 
         return await PickAutoNomination(roundData.round, players);
     }
