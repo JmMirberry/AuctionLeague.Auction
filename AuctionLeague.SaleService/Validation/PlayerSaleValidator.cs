@@ -30,11 +30,6 @@ namespace AuctionLeague.SaleService.Validation
         {
             var budgetRemaining = TotalBudget - team.Players.Sum(x => x.SalePrice);
 
-            if (soldPlayer.SalePrice > budgetRemaining)
-            { 
-                return Result.Fail($"Invalid purchase. {team.TeamName} has a max budget of {budgetRemaining}");
-            }
-
             var maxPerPlayer = budgetRemaining - (playersRemaining - 1);
 
             if (maxPerPlayer < soldPlayer.SalePrice)
