@@ -1,6 +1,5 @@
 using AuctionLeague.Service.Auction.Interfaces;
 using AuctionLeague.Service.Interfaces;
-using SlackNet;
 using SlackNet.Blocks;
 using SlackNet.Interaction;
 using SlackNet.WebApi;
@@ -12,13 +11,11 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
         public const string SlashCommand = "/autonominate";
         private readonly IAutoNominationService _service;
         private readonly ISlackAuctionService _slackAuctionService;
-        private readonly ISlackApiClient _slackClient;
 
-        public AutoNominationHandler(IAutoNominationService service, ISlackAuctionService slackAuctionService, ISlackApiClient slackClient)
+        public AutoNominationHandler(IAutoNominationService service, ISlackAuctionService slackAuctionService)
         {
             _service = service;
             _slackAuctionService = slackAuctionService;
-            _slackClient = slackClient;
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
@@ -62,9 +59,11 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     }
                 };
 
-                await _slackClient.Chat.PostMessage(slackMessage, null);
-                
-                return new SlashCommandResponse();
+                return new SlashCommandResponse
+                {
+                    Message = slackMessage,
+                    ResponseType = ResponseType.InChannel
+                };
             }
             catch (Exception e)
             {
