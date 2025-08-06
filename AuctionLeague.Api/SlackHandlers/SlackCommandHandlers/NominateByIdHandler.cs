@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Service.Auction;
+using AuctionLeague.Service.Auction;
 using AuctionLeague.Service.Auction.Interfaces;
 using SlackNet;
 using SlackNet.Blocks;
@@ -11,12 +11,10 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
     {
         public const string SlashCommand = "/nominatebyid";
         private readonly ISlackAuctionService _slackAuctionService;
-        private readonly ISlackApiClient _slackClient;
 
-        public NominateByIdHandler(ISlackAuctionService slackAuctionService, ISlackApiClient slackClient)
+        public NominateByIdHandler(ISlackAuctionService slackAuctionService)
         {
             _slackAuctionService = slackAuctionService;
-            _slackClient = slackClient;
         }
         public async Task<SlashCommandResponse> Handle(SlashCommand command)
         {
@@ -58,9 +56,11 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                     }
                 };
 
-                await _slackClient.Chat.PostMessage(slackMessage, null);
-
-                return new SlashCommandResponse(); // Empty response does not play anything back
+                return new SlashCommandResponse
+                {
+                    Message = slackMessage,
+                    ResponseType = ResponseType.InChannel
+                };
             }
             catch (PlayerNotFoundException e)
             {
@@ -68,7 +68,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 {
                     Message = new Message
                     {
-                        Text = e.Message.ToString(),
+                        Text = e.Message,
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
@@ -79,7 +79,7 @@ namespace AuctionLeague.SlackHandlers.SlackCommandHandlers
                 {
                     Message = new Message
                     {
-                        Text = e.Message.ToString(),
+                        Text = e.Message,
                     },
                     ResponseType = ResponseType.Ephemeral
                 };
