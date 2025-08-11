@@ -38,7 +38,7 @@ namespace AuctionLeague.Service.Auction
             {
                 var displayName = (await _slackClient.Users.Info(_dataStore.Data.BidderUserId)).RealName;
 
-                var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid), displayName);
+                var result = await _playerSaleService.ProcessSaleByBidder(new SoldPlayer(_dataStore.Data.Player, _dataStore.Data.Bid, DateTime.Now), displayName);
 
                 if (result.IsSuccess)
                 {

@@ -60,7 +60,7 @@ namespace AuctionLeague.SaleService
             var player = playerTask.Result;
             var team = teamTask.Result;
 
-            var soldPlayer = new SoldPlayer(player, salePrice);
+            var soldPlayer = new SoldPlayer(player, salePrice, DateTime.Now);
 
 
             if (team == null)
