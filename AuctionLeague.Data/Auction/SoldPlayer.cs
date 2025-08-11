@@ -4,7 +4,7 @@ namespace AuctionLeague.Data.Auction;
 
 public class SoldPlayer : Player
 {
-    public SoldPlayer(Player player, double salePrice)
+    public SoldPlayer(Player player, double salePrice, DateTime saleTime)
     {
         PlayerId = player.PlayerId;
         FirstName = player.FirstName;
@@ -14,6 +14,7 @@ public class SoldPlayer : Player
         Value = player.Value;
         TotalPointsPreviousYear = player.TotalPointsPreviousYear;
         SalePrice = salePrice;
+        SaleTime = saleTime;
     }
 
     public SoldPlayer()
@@ -21,4 +22,5 @@ public class SoldPlayer : Player
     }
 
     public double SalePrice { get; set; }
+    public DateTime SaleTime { get; set; }
 }
