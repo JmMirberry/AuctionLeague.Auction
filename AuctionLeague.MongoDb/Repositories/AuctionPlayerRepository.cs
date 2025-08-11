@@ -58,6 +58,13 @@ namespace AuctionLeague.MongoDb.Repositories
             await _playersCollection.UpdateOneAsync(filter, update);
         }
 
+        public async Task SetPlayerAsNotSold(int playerId)
+        {
+            var filter = Builders<AuctionPlayerEntity>.Filter.Eq(p => p.PlayerId, playerId);
+            var update = Builders<AuctionPlayerEntity>.Update.Set(p => p.IsSold, false);
+            await _playersCollection.UpdateOneAsync(filter, update);
+        }
+
         public async Task ResetSold()
         {
             var filter = Builders<AuctionPlayerEntity>.Filter.Empty;
