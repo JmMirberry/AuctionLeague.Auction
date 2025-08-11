@@ -14,5 +14,6 @@ public interface IAuctionPlayerRepository
     Task RemovePlayerAsync(int playerId);
     Task RemoveAllPlayersAsync();
     Task SetPlayerAsSold(int playerId);
+    Task SetPlayerAsNotSold(int playerId);
     Task ResetSold();
 }
