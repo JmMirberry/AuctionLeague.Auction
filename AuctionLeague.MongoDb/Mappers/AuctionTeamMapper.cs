@@ -21,13 +21,13 @@ public static class AuctionTeamMapper
         {
             TeamName = team.TeamName,
             SlackBidders = team.SlackBidders.ToList(),
-            Players = team.Players.Select(p => new SoldPlayer(p.ToPlayer(), p.SalePrice) ).ToList(),
+            Players = team.Players.Select(p => new SoldPlayer(p.ToPlayer(), p.SalePrice, p.SaleTime) ).ToList(),
         };
 }
 
     public static SoldPlayerEntity ToSoldPlayerEntity(this SoldPlayer player)
     {
 
-        return new SoldPlayerEntity(player.ToEntity(), player.SalePrice);
+        return new SoldPlayerEntity(player.ToEntity(), player.SalePrice, player.SaleTime);
     }
 }
