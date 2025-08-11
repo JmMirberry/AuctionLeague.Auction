@@ -106,7 +106,8 @@ namespace AuctionLeague.Controllers
             }
 
             await _auctionTeamsRepository.RemovePlayerFromAuctionTeamAsync(auctionTeamName, playerId);
-
+            await _playerRepository.SetPlayerAsNotSold(playerId);
+            
             return NoContent();
         }
         
