@@ -14,4 +14,5 @@ public interface ISlackAuctionManager
     SlackAuctionData CurrentBid();
     void EndAuction();
     void BidMade(int bid, string bidder);
+    public void RestartTimer();
 }
