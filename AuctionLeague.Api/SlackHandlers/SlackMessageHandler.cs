@@ -63,7 +63,7 @@ namespace SlackAPI.Handlers
                     Channel = slackEvent.Channel
                 });
                 
-                var bidder = (await _slack.Users.Info(currentBid.BidderUserId)).Name;
+                var bidder = (await _slack.Users.Info(currentBid.BidderUserId)).RealName;
                 
                 await _slack.Chat.PostMessage(new Message
                 {
