@@ -17,6 +17,8 @@ namespace AuctionLeague.MongoDb.Abstractions
 
         Task AddPlayerToAuctionTeamAsync(string teamName, SoldPlayer soldPlayer);
 
+        Task RemovePlayerFromAuctionTeamAsync(string teamName, int playerId);
+
         Task UpdateAuctionTeamAsync(AuctionTeam updatedAuctionTeam);
 
         Task RemovePlayersFromAuctionTeamAsync(string teamName);
