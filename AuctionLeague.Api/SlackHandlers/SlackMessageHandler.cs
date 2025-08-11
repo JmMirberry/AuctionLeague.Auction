@@ -30,6 +30,7 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be integers",
                     Channel = slackEvent.Channel
                 });
+                _auctionManager.RestartTimer();
                 return;
             }
 
@@ -40,6 +41,7 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be > 1",
                     Channel = slackEvent.Channel
                 });
+                _auctionManager.RestartTimer();
                 return;
             }
 
@@ -50,6 +52,7 @@ namespace SlackAPI.Handlers
                     Text = "Bids must be < 91",
                     Channel = slackEvent.Channel
                 });
+                _auctionManager.RestartTimer();
                 return;
             }
 
@@ -70,6 +73,7 @@ namespace SlackAPI.Handlers
                     Text = $"{bidder} is the current highest bidder",
                     Channel = slackEvent.Channel
                 });
+                _auctionManager.RestartTimer();
                 return;
             }
 

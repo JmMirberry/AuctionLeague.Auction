@@ -74,7 +74,12 @@ namespace AuctionLeague.Service.Auction
                 _dataStore.Data.Bid = Math.Max(bid, _dataStore.Data.Bid);
                 _dataStore.Data.BidderUserId = bidder;
             }
-        } 
+        }
+
+        public void RestartTimer()
+        {
+            _timer.RestartTimer();
+        }
         
         private void ResetData() 
         {  
