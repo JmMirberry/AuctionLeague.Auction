@@ -1,4 +1,4 @@
-﻿using AuctionLeague.Service.Auction.Interfaces;
+using AuctionLeague.Service.Auction.Interfaces;
 using Newtonsoft.Json;
 using SlackNet;
 using SlackNet.Events;
@@ -56,9 +56,18 @@ namespace SlackAPI.Handlers
             var currentBid = _auctionManager.CurrentBid();
             if (bid <= currentBid.Bid)
             {
+                
                 await _slack.Chat.PostMessage(new Message
                 {
-                    Text = $"Bid must be greater than current high bid of {currentBid.Bid}",
+                    Text = $"Bid must be greater than current high bid of {currentBid.Bid}.",
+                    Channel = slackEvent.Channel
+                });
+                
+                var bidder = (await _slack.Users.Info(currentBid.BidderUserId)).Name;
+                
+                await _slack.Chat.PostMessage(new Message
+                {
+                    Text = $"{bidder} it the current highest bidder",
                     Channel = slackEvent.Channel
                 });
                 return;
