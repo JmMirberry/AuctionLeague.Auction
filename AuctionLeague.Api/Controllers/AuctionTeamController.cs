@@ -23,7 +23,7 @@ namespace AuctionLeague.Controllers
         public async Task<IEnumerable<AuctionTeam>> Get() =>
             await _auctionTeamsRepository.GetAuctionTeamsAsync();
 
-        [HttpGet("{AuctionTeamName:length(24)}")]
+        [HttpGet("{auctionTeamName}")]
         public async Task<ActionResult<AuctionTeam>> Get(string auctionTeamName)
         {
             var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
@@ -52,22 +52,6 @@ namespace AuctionLeague.Controllers
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
         }
-
-        [HttpPut]
-        [Route("update")]
-        public async Task<IActionResult> Update(string auctionTeamName, AuctionTeam updatedAuctionTeam)
-        {
-            var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
-
-            if (auctionTeam is null)
-            {
-                return NotFound();
-            }
-
-            await _auctionTeamsRepository.UpdateAuctionTeamAsync(updatedAuctionTeam);
-
-            return NoContent();
-        }
         
         [HttpDelete]
         [Route("/remove-players/{auctionTeamName}")]
@@ -84,7 +68,7 @@ namespace AuctionLeague.Controllers
 
             return NoContent();
         }
-
+        
         [HttpDelete]
         [Route("/remove-player/{auctionTeamName}/{playerId:int}")]
         public async Task<IActionResult> DeletePlayer(string auctionTeamName, int playerId)
