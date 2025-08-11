@@ -57,7 +57,7 @@ namespace AuctionLeague.Controllers
         
         [HttpPut]
         [Route("add-player/{auctionTeamName}/{playerId:int}/{salePrice:int}")]
-        public async Task<IActionResult> AddPlayer(string teamName, int playerId, int salePrice)
+        public async Task<IActionResult> AddPlayer(string auctionTeamName, int playerId, int salePrice)
         {
             var player = await _playerRepository.GetPlayerAsync(playerId);
 
@@ -73,7 +73,7 @@ namespace AuctionLeague.Controllers
 
             var soldPlayer = new SoldPlayer(player, salePrice, DateTime.Now);
             
-            var result = await _playerSaleService.ProcessSaleByTeamName(soldPlayer, teamName);
+            var result = await _playerSaleService.ProcessSaleByTeamName(soldPlayer, auctionTeamName);
 
             return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
         }
