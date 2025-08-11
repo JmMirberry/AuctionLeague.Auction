@@ -84,6 +84,22 @@ namespace AuctionLeague.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [Route("/remove-player/{auctionTeamName}/{playerId:int}")]
+        public async Task<IActionResult> DeletePlayer(string auctionTeamName, int playerId)
+        {
+            var auctionTeam = await _auctionTeamsRepository.GetAuctionTeamAsync(auctionTeamName);
+
+            if (auctionTeam is null)
+            {
+                return NotFound();
+            }
+
+            await _auctionTeamsRepository.RemovePlayerFromAuctionTeamAsync(auctionTeamName, playerId);
+
+            return NoContent();
+        }
         
         [HttpDelete]
         [Route("/remove-all-players")]

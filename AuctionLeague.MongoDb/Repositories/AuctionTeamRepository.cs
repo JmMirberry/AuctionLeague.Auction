@@ -49,6 +49,19 @@ namespace AuctionLeague.MongoDb.Repositories
             await _auctionTeamsCollection.UpdateOneAsync(x => x.TeamName == teamName, pushPlayerDefinition);
         }
 
+         public async Task RemovePlayerFromAuctionTeamAsync(string teamName, int playerId)
+        {
+            var pullPlayerDefinition = Builders<AuctionTeamEntity>.Update.PullFilter(
+                t => t.Players,
+                p => p.PlayerId == playerId
+            );
+
+            await _auctionTeamsCollection.UpdateOneAsync(
+                x => x.TeamName == teamName,
+                pullPlayerDefinition
+            );
+        }
+
         public async Task RemovePlayersFromAuctionTeamAsync(string teamName)
         {
             var players = Builders<AuctionTeamEntity>.Update.Set("Players",  new BsonArray());
